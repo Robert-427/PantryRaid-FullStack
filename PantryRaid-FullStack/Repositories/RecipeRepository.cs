@@ -68,6 +68,39 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public Recipe GetRecipeByIngredient(int ingredientId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT	r.Id, r.Title, r.Description, r.ImageUrl, r.Website, 
+								ri.Id AS RecipeIngredientId, ri.IngredientId, ri.RecipeId, ri.IsRequired, 
+								i.Id AS IngredientsId, i.FoodGroupId, i.Name as Ingredient, 
+								g.Id AS GroupId, g.Name AS FoodGroup
+						FROM Recipe r
+						LEFT JOIN RecipeIngredient ri ON ri.RecipeId = r.Id
+						LEFT JOIN Ingredient i ON ri.IngredientId = i.Id
+						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
+                        WHERE i.Id = @id
+						ORDER BY g.Id";
+
+                    DBUtils.AddParameter(cmd, "@id", ingredientId);
+
+                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Recipe recipe = null;
+                        if(reader.Read())
+                        {
+                            recipe = NewRecipeFromReader(reader);
+                        }
+                        return recipe;
+                    }
+                }
+            }
+        }
         private Recipe NewRecipeFromReader(SqlDataReader reader)
         {
             return new Recipe()

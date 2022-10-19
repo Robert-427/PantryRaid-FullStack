@@ -66,6 +66,37 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public List<Ingredient> GetIngredientsByRecipe(int recipeId)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT i.Id, i.Name, i.FoodGroupId, g.id, g.Name AS FoodGroupName, r.Id AS RecipeId
+                        FROM Ingredient i
+                        JOIN FoodGroup g ON i.FoodGroupId = g.id
+                        JOIN RecipeIngredient ri ON ri.IngredientId = i.Id
+                        JOIN Recipe r ON ri.RecipeId = r.Id
+                        WHERE r.id = @recipeId
+                        ORDER BY g.Id";
+
+                    DBUtils.AddParameter(cmd, "@recipeId", recipeId);
+
+                    var reader = cmd.ExecuteReader();
+
+                    var ingredients = new List<Ingredient>();
+
+                    while (reader.Read())
+                    {
+                        ingredients.Add(NewIngredientFromReader(reader));
+                    };
+                    reader.Close();
+                    return ingredients;
+                }
+            }
+        }
         public Ingredient GetIngredientById(int id)
         {
             using (var conn = Connection)

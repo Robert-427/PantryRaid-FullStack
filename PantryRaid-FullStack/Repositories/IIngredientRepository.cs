@@ -7,6 +7,7 @@ namespace PantryRaid.Repositories
     {
         public List<Ingredient> GetAllIngredients();
         public List<Ingredient> GetAllIngredientsByUser(string firebaseUserId);
+        public List<Ingredient> GetIngredientsByRecipe(int recipeId);
         public Ingredient GetIngredientById(int id);
     }
 }

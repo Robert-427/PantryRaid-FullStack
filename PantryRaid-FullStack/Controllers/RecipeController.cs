@@ -24,10 +24,13 @@ namespace PantryRaid.Controllers
         }
 
         // GET api/<ValuesController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
+        [HttpGet("GetByIngredient/{ingredientId}")]
+        public IActionResult GetRecipe(int ingredientId)
         {
-            return "value";
+            var recipe = _recipeRepository.GetRecipeByIngredient(ingredientId);
+            if(recipe == null)
+            { return NotFound(); }
+            return Ok(recipe);
         }
 
         // POST api/<ValuesController>

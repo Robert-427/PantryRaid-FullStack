@@ -36,6 +36,16 @@ namespace PantryRaid.Controllers
             return Ok(_ingredientRepository.GetIngredientById(id));
         }
 
+        [HttpGet("GetByRecipe/{recipeId}")]
+        public IActionResult GetByRecipe(int recipeId)
+        {
+            var ingredients = _ingredientRepository.GetIngredientsByRecipe(recipeId);
+            {
+                if(ingredients == null) return NotFound();
+                return Ok(ingredients);
+            }
+        }
+
         // POST api/<ValuesController>
         [HttpPost]
         public void Post([FromBody] string value)
