@@ -1,6 +1,6 @@
 using System;
 
-namespace PantryRaid_FullStack
+namespace PantryRaid
 {
     public class WeatherForecast
     {

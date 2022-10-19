@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
-namespace PantryRaid_FullStack.Models
+namespace PantryRaid.Models
 {
     public class Recipe
     {
@@ -13,5 +14,6 @@ namespace PantryRaid_FullStack.Models
 
         [Required]
         public string Description { get; set; }
+        public List<Ingredient> Ingredients { get; set; }
     }
 }

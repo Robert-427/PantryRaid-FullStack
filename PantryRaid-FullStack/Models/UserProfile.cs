@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PantryRaid_FullStack.Models
+namespace PantryRaid.Models
 {
     public class UserProfile
     {
@@ -22,6 +22,7 @@ namespace PantryRaid_FullStack.Models
         public string Address { get; set; }
         public string City { get; set; }
         public int StateId { get; set; }
+        public State State { get; set; }
         public int ZipCode { get; set; }
 
         [Required]

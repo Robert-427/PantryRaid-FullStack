@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace PantryRaid_FullStack.Controllers
+namespace PantryRaid.Controllers
 {
     [ApiController]
     [Route("[controller]")]

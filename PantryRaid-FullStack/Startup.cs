@@ -1,4 +1,4 @@
-using PantryRaid_FullStack.Repositories;
+using PantryRaid.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace PantryRaid_FullStack
+namespace PantryRaid
 {
     public class Startup
     {
@@ -30,6 +30,7 @@ namespace PantryRaid_FullStack
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddTransient<IUserProfileRepository, UserProfileRepository>();
+            services.AddTransient<IIngredientRepository, IngredientRepository>();
             var firebaseProjectId = Configuration.GetValue<string>("FirebaseProjectId");
             var googleTokenUrl = $"https://securetoken.google.com/{firebaseProjectId}";
             services
@@ -49,7 +50,7 @@ namespace PantryRaid_FullStack
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PantryRaid_FullStack", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "PantryRaid", Version = "v1" });
             });
         }
 
@@ -63,7 +64,7 @@ namespace PantryRaid_FullStack
                 app.UseAuthorization();
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PantryRaid_FullStack v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PantryRaid v1"));
             }
 
             app.UseHttpsRedirection();

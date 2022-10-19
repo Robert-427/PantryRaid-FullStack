@@ -1,7 +1,7 @@
 ﻿using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
-namespace PantryRaid_FullStack.Repositories
+namespace PantryRaid.Repositories
 {
     public class BaseRepository
     {

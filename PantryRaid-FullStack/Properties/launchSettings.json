@@ -17,7 +17,7 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "PantryRaid_FullStack": {
+    "PantryRaid": {
       "commandName": "Project",
       "dotnetRunMessages": "true",
       "launchBrowser": true,

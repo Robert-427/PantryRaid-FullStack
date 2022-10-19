@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PantryRaid_FullStack.Models
+namespace PantryRaid.Models
 {
     public class Ingredient
     {
@@ -9,5 +9,6 @@ namespace PantryRaid_FullStack.Models
         public string Name { get; set; }
         [Required]
         public int FoodGroupId { get; set; }
+        public FoodGroup FoodGroup { get; set; }
     }
 }

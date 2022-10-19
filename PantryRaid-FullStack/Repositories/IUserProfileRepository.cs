@@ -1,9 +1,11 @@
-﻿using PantryRaid_FullStack.Models;
+﻿using PantryRaid.Models;
+using System.Collections.Generic;
 
-namespace PantryRaid_FullStack.Repositories
+namespace PantryRaid.Repositories
 {
     public interface IUserProfileRepository
     {
-        UserProfile GetByFirebaseUserId(string firebaseUserId);
+        public UserProfile GetByFirebaseUserId(string firebaseUserId);
+        public List<UserProfile> GetAllUsers();
     }
 }

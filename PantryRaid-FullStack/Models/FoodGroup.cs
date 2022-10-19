@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace PantryRaid_FullStack.Models
+namespace PantryRaid.Models
 {
     public class FoodGroup
     {
