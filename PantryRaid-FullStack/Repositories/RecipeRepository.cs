@@ -3,13 +3,14 @@ using Microsoft.Extensions.Configuration;
 using PantryRaid.Models;
 using PantryRaid.Utils;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PantryRaid.Repositories
 {
     public class RecipeRepository : BaseRepository, IRecipeRepository
     {
         public RecipeRepository(IConfiguration configuration) : base(configuration) { }
-        public List<Recipe> GetAllRecipes()
+        public List<Recipe> GetAllRecipesWithIngredients()
         {
             using (var conn = Connection)
             {
@@ -27,42 +28,43 @@ namespace PantryRaid.Repositories
 						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
 						ORDER BY g.Id";
 
-                    var reader = cmd.ExecuteReader();
-                    var recipes = new List<Recipe>();
-                    while (reader.Read())
+                    using(SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        recipes.Add(NewRecipeFromReader(reader));
-                    };
-                    reader.Close();
-                    return recipes;
+                        var recipes = new List<Recipe>();
+                        while (reader.Read())
+                        {
+                            var recipeId = DBUtils.GetInt(reader, "Id");
 
-                    //using (SqlDataReader reader = cmd.ExecuteReader())
-                    //{
-                    //    Recipe recipe = null;
-                    //    while (reader.Read())
-                    //    {
-                    //        if(recipe == null)
-                    //        {
-                    //            recipe = NewRecipeFromReader(reader);
-                    //        }
-                    //        if(DBUtils.IsNotDbNull(reader, "ri.Id"))
-                    //        {
-                    //            recipe.Ingredients.Add(new Ingredient()
-                    //            {
-                    //                Id = DBUtils.GetInt(reader, "IngredientsId"),
-                    //                Name = DBUtils.GetString(reader, "Ingredient"),
-                    //                FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
-                    //                FoodGroup = new FoodGroup()
-                    //                {
-                    //                    Id = DBUtils.GetInt(reader, "FoodGroupId"),
-                    //                    Name = DBUtils.GetString(reader, "FoodGroup")
-                    //                }
-                    //            });
-                    //        }
-                    //    }
-                    //    reader.Close();
-                    //    return recipe;
-                    //}
+                            var exisitingRecipe = recipes.FirstOrDefault(p => p.Id == recipeId);
+                            if(exisitingRecipe == null)
+                            {
+                                exisitingRecipe = new Recipe()
+                                {
+                                    Id = DBUtils.GetInt(reader, "Id"),
+                                    Description = DBUtils.GetString(reader, "Description"),
+                                    Website = DBUtils.GetString(reader, "Website"),
+                                    ImageUrl = DBUtils.GetString(reader, "ImageUrl"),
+                                    Ingredients = new List<Ingredient>()
+                                };
+                                recipes.Add(exisitingRecipe);
+                            }
+                            if(DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
+                            {
+                                exisitingRecipe.Ingredients.Add(new Ingredient()
+                                {
+                                    Id = DBUtils.GetInt(reader, "IngredientsId"),
+                                    Name = DBUtils.GetString(reader,"Ingredient"),
+                                    FoodGroup = new FoodGroup()
+                                    {
+                                        Id = DBUtils.GetInt(reader,"GroupId"),
+                                        Name = DBUtils.GetString(reader,"FoodGroup")
+                                    }
+                                });
+                            }
+                        };
+                        reader.Close();
+                        return recipes;
+                    }
                 }
             }
         }

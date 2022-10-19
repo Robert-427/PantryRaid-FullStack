@@ -17,9 +17,9 @@ namespace PantryRaid.Controllers
 
         // GET: api/<ValuesController>
         [HttpGet]
-        public IActionResult GetAllRecipes()
+        public IActionResult GetAll()
         {
-            var recipes = _recipeRepository.GetAllRecipes();
+            var recipes = _recipeRepository.GetAllRecipesWithIngredients();
             return Ok(recipes);
         }
 
