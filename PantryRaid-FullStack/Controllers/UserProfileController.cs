@@ -23,7 +23,7 @@ namespace PantryRaid.Controllers
         }
 
         // GET: api/<ValuesController>
-        [HttpGet("{firebaseUserId}")]
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
         public IActionResult GetUserProfile(string firebaseUserId)
         {
             var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
