@@ -5,6 +5,6 @@ namespace PantryRaid.Repositories
 {
     public interface IRecipeRepository
     {
-        public List<Recipe> GetAllRecipes();
+        public List<Recipe> GetAllRecipesWithIngredients();
     }
 }
