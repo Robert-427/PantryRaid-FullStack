@@ -7,5 +7,7 @@ namespace PantryRaid.Repositories
     {
         public UserProfile GetByFirebaseUserId(string firebaseUserId);
         public List<UserProfile> GetAllUsers();
+        public void AddNewUser(UserProfile user);
+        public void UpdateUser(UserProfile user);
     }
 }

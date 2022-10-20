@@ -125,6 +125,45 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public void AddNewIngredient(Ingredient ingredient)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Ingredient (Name, FoodGroupId)
+                        OUTPUT INSERTED.ID
+                        VALUES (@Name, @FoodGroupId)";
+
+                    DBUtils.AddParameter(cmd, "@Name", ingredient.Name);
+                    DBUtils.AddParameter(cmd, "@FoodGroupId", ingredient.FoodGroupId);
+
+                    ingredient.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void UpdateIngredient(Ingredient ingredient)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Ingredient
+                        SET Name = @Name,
+                            FoodGroupId = @FoodGroupId
+                        WHERE Id = @Id";
+
+                    DBUtils.AddParameter(cmd, "@Name", ingredient.Name);
+                    DBUtils.AddParameter(cmd, "FoodGroupId", ingredient.FoodGroupId);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         private Ingredient NewIngredientFromReader(SqlDataReader reader)
         {
             return new Ingredient()

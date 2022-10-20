@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PantryRaid.Models;
 using PantryRaid.Repositories;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -35,20 +36,30 @@ namespace PantryRaid.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public IActionResult Post(Recipe recipe)
         {
+            _recipeRepository.AddNewRecipe(recipe);
+            return CreatedAtAction("Get", new {id = recipe.Id}, recipe);
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public IActionResult Put(int id, Recipe recipe)
         {
+            if(id != recipe.Id)
+            {
+                return BadRequest();
+            }
+            _recipeRepository.UpdateRecipe(recipe);
+            return NoContent();
         }
 
         // DELETE api/<ValuesController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IActionResult Delete(int id)
         {
+            _recipeRepository.DeleteRecipe(id);
+            return NoContent();
         }
     }
 }

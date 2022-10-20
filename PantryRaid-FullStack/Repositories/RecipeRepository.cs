@@ -41,6 +41,7 @@ namespace PantryRaid.Repositories
                                 exisitingRecipe = new Recipe()
                                 {
                                     Id = DBUtils.GetInt(reader, "Id"),
+                                    Title = DBUtils.GetString(reader, "Title"),
                                     Description = DBUtils.GetString(reader, "Description"),
                                     Website = DBUtils.GetString(reader, "Website"),
                                     ImageUrl = DBUtils.GetString(reader, "ImageUrl"),
@@ -54,6 +55,7 @@ namespace PantryRaid.Repositories
                                 {
                                     Id = DBUtils.GetInt(reader, "IngredientsId"),
                                     Name = DBUtils.GetString(reader,"Ingredient"),
+                                    FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
                                     FoodGroup = new FoodGroup()
                                     {
                                         Id = DBUtils.GetInt(reader,"GroupId"),
@@ -101,11 +103,70 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public void AddNewRecipe(Recipe recipe)
+        {
+            using(var conn=Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO Recipe (Title, Description, Website, ImageUrl)
+                        OUTPUT INSERTED.ID
+                        VALUES (@Title, @Description, @Website, @ImageUrl)";
+
+                    DBUtils.AddParameter(cmd, "@Title", recipe.Title);
+                    DBUtils.AddParameter(cmd, "@Description", recipe.Description);
+                    DBUtils.AddParameter(cmd, "@Website", recipe.Website);
+                    DBUtils.AddParameter(cmd, "@ImageUrl", recipe.ImageUrl);
+
+                    recipe.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void UpdateRecipe(Recipe recipe)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE Recipe
+                        SET Title = @Title,
+                            Description = @Description,
+                            Website = @Website,
+                            ImageUrl = @ImageUrl
+                        WHERE Id = @Id";
+
+                    DBUtils.AddParameter(cmd, "@Title", recipe.Title);
+                    DBUtils.AddParameter(cmd, "@Description", recipe.Description);
+                    DBUtils.AddParameter(cmd, "@Website", recipe.Website);
+                    DBUtils.AddParameter(cmd, "@ImageUrl", recipe.ImageUrl);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void DeleteRecipe(int id)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM Recipe WHERE Id = @id";
+                    DBUtils.AddParameter(cmd, "@id", id);
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         private Recipe NewRecipeFromReader(SqlDataReader reader)
         {
             return new Recipe()
             {
                 Id = DBUtils.GetInt(reader, "Id"),
+                Title = DBUtils.GetString(reader, "Title"),
                 Description = DBUtils.GetString(reader, "Description"),
                 Website = DBUtils.GetString(reader, "Website"),
                 ImageUrl = DBUtils.GetString(reader, "ImageUrl"),
