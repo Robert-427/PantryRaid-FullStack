@@ -7,5 +7,8 @@ namespace PantryRaid.Repositories
     {
         public List<Recipe> GetAllRecipesWithIngredients();
         public Recipe GetRecipeByIngredient(int ingredientId);
+        public void AddNewRecipe(Recipe recipe);
+        public void UpdateRecipe(Recipe recipe);
+        public void DeleteRecipe(int id);
     }
 }

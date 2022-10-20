@@ -63,6 +63,71 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public void AddNewUser(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERTED INTO UserProfile (FirebaseUserId, DisplayName, Email, FirstName, LastName, 
+                                                Address, City, StateId, ZipCode, IsAdmin)
+                        OUTPUT INSERTED.ID
+                        VALUES (@FirebaseUserId, @DisplayName, @Email, @FirstName, @LastName, 
+                                @Address, @City, @StateId, @ZipCode, @IsAdmin)";
+
+                    DBUtils.AddParameter(cmd, "@FirebaseUserId", user.FirebaseUserId);
+                    DBUtils.AddParameter(cmd, "@DisplayName", user.DisplayName);
+                    DBUtils.AddParameter(cmd, "@Email", user.Email);
+                    DBUtils.AddParameter(cmd, "@FirstName", user.FirstName);
+                    DBUtils.AddParameter(cmd, "@LastName", user.LastName);
+                    DBUtils.AddParameter(cmd, "@Address", user.Address);
+                    DBUtils.AddParameter(cmd, "@City", user.City);
+                    DBUtils.AddParameter(cmd, "@StateId", user.StateId);
+                    DBUtils.AddParameter(cmd, "@ZipCode", user.ZipCode);
+                    DBUtils.AddParameter(cmd, "IsAdmin", user.IsAdmin);
+
+                    user.Id = (int)cmd.ExecuteScalar();
+                }
+            }
+        }
+        public void UpdateUser(UserProfile user)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE UserProfile
+                        SET FirebaseUserId = @FirebaseUserId,
+                            DisplayName = @DisplayName,
+                            Email = @Email,
+                            FirstName = @FirstName,
+                            LastName = @LastName,
+                            Address = @Address,
+                            City = @City,
+                            StateId = @StateId,
+                            ZipCode =  @ZipCode,
+                            IsAdmin = @IsAdmin
+                        WHERE Id = @Id";
+
+                    DBUtils.AddParameter(cmd, "@FirebaseUserId", user.FirebaseUserId);
+                    DBUtils.AddParameter(cmd, "@DisplayName", user.DisplayName);
+                    DBUtils.AddParameter(cmd, "@Email", user.Email);
+                    DBUtils.AddParameter(cmd, "@FirstName", user.FirstName);
+                    DBUtils.AddParameter(cmd, "@LastName", user.LastName);
+                    DBUtils.AddParameter(cmd, "@Address", user.Address);
+                    DBUtils.AddParameter(cmd, "@City", user.City);
+                    DBUtils.AddParameter(cmd, "@StateId", user.StateId);
+                    DBUtils.AddParameter(cmd, "@ZipCode", user.ZipCode);
+                    DBUtils.AddParameter(cmd, "IsAdmin", user.IsAdmin);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         private UserProfile NewUserFromReader(SqlDataReader reader)
         {
             return new UserProfile()
