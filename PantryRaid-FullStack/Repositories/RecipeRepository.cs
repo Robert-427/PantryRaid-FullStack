@@ -103,6 +103,52 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public Recipe GetRecipeById(int recipeId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT	r.Id, r.Title, r.Description, r.ImageUrl, r.Website, 
+								ri.Id AS RecipeIngredientId, ri.IngredientId, ri.RecipeId, ri.IsRequired, 
+								i.Id AS IngredientsId, i.FoodGroupId, i.Name as Ingredient, 
+								g.Id AS GroupId, g.Name AS FoodGroup
+						FROM Recipe r
+						LEFT JOIN RecipeIngredient ri ON ri.RecipeId = r.Id
+						LEFT JOIN Ingredient i ON ri.IngredientId = i.Id
+						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
+                        WHERE r.Id = @id";
+
+                    DBUtils.AddParameter(cmd, "@id", recipeId);
+
+                    using (SqlDataReader reader = cmd.ExecuteReader())
+                    {
+                        Recipe recipe = null;
+                        if (reader.Read())
+                        {
+                            recipe = NewRecipeFromReader(reader);
+                        }
+                        if (DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
+                        {
+                            recipe.Ingredients.Add(new Ingredient()
+                            {
+                                Id = DBUtils.GetInt(reader, "IngredientsId"),
+                                Name = DBUtils.GetString(reader, "Ingredient"),
+                                FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
+                                FoodGroup = new FoodGroup()
+                                {
+                                    Id = DBUtils.GetInt(reader, "GroupId"),
+                                    Name = DBUtils.GetString(reader, "FoodGroup")
+                                }
+                            });
+                        }
+                        return recipe;
+                    }
+                }
+            }
+        }
         public void AddNewRecipe(Recipe recipe)
         {
             using(var conn=Connection)

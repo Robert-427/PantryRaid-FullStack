@@ -10,6 +10,11 @@ export const getRecipeByIngredientFromApi = (ingredientId) => {
     .then((res) => res.json())
 };
 
+export const getRecipeByIdFromApi = (recipeId) => {
+    return fetch(baseUrl+`/GetByRecipe/${recipeId}`)
+    .then((res) => res.json())
+}
+
 export const addNewRecipeToApi = (recipe) => {
     return fetch(baseUrl, {
         method: "POST",

@@ -26,9 +26,18 @@ namespace PantryRaid.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("GetByIngredient/{ingredientId}")]
-        public IActionResult GetRecipe(int ingredientId)
+        public IActionResult GetRecipeByIngredient(int ingredientId)
         {
             var recipe = _recipeRepository.GetRecipeByIngredient(ingredientId);
+            if(recipe == null)
+            { return NotFound(); }
+            return Ok(recipe);
+        }
+
+        [HttpGet("GetByRecipe/{recipeId}")]
+        public IActionResult GetRecipe(int recipeId)
+        {
+            var recipe = _recipeRepository.GetRecipeById(recipeId);
             if(recipe == null)
             { return NotFound(); }
             return Ok(recipe);

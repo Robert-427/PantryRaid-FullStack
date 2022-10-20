@@ -1,31 +1,87 @@
+import { getToken } from "./authManager";
+
 const baseUrl = `api/UserProfile`
 
 export const getAllUsersFromApi = () => {
-    return fetch(baseUrl)
-    .then((res) => res.json())
+    return getToken().then((token) => {
+        return fetch(baseUrl, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          } else {
+            throw new Error(
+              "An unknown error occurred while trying to get quotes.",
+            );
+          }
+        });
+    });
 };
 
 export const getUserByFirebaseFromApi = (firebaseUserId) => {
-    return fetch(baseUrl+`/DoesUserExist/${firebaseUserId}`)
-    .then((res) => res.json())
+    return getToken().then((token) => {
+        return fetch(baseUrl+`/${firebaseUserId}`, {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }).then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          } else {
+            throw new Error(
+              "An unknown error occurred while trying to get quotes.",
+            );
+          }
+        });
+    });
 };
 
 export const addNewUserToApi = (user) => {
-    return fetch(baseUrl, {
-        method: "POST",
-        headers: {
+    return getToken().then((token) => {
+        return fetch(baseUrl, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
+          },
+          body: JSON.stringify(quote),
+        }).then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          } else if (resp.status === 401) {
+            throw new Error("Unauthorized");
+          } else {
+            throw new Error(
+              "An unknown error occurred while trying to save a new quote.",
+            );
+          }
+        });
     });
 };
 
 export const updateUserInApi = (user) => {
-    return fetch(baseUrl+`/${user.id}`, {
-        method: "PUT",
-        headers: {
+    return getToken().then((token) => {
+        return fetch(baseUrl, {
+          method: "PUT",
+          headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
+          },
+          body: JSON.stringify(quote),
+        }).then((resp) => {
+          if (resp.ok) {
+            return resp.json();
+          } else if (resp.status === 401) {
+            throw new Error("Unauthorized");
+          } else {
+            throw new Error(
+              "An unknown error occurred while trying to save a new quote.",
+            );
+          }
+        });
     });
 };
