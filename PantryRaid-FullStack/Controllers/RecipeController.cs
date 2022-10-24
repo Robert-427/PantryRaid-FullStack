@@ -1,27 +1,33 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PantryRaid.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class RecipeController : ControllerBase
     {
         private readonly IRecipeRepository _recipeRepository;
-        public RecipeController(IRecipeRepository recipeRepository)
+        private readonly IUserProfileRepository _userProfileRepository;
+        public RecipeController(
+            IRecipeRepository recipeRepository,
+            IUserProfileRepository userProfileRepsoitory)
         {
             _recipeRepository = recipeRepository;
+            _userProfileRepository = userProfileRepsoitory;
         }
 
         // GET: api/<ValuesController>
         [HttpGet]
         public IActionResult GetAll()
         {
-            var recipes = _recipeRepository.GetAllRecipesWithIngredients();
-            return Ok(recipes);
+            return Ok(_recipeRepository.GetAllRecipesWithIngredients());
         }
 
         // GET api/<ValuesController>/5
@@ -69,6 +75,12 @@ namespace PantryRaid.Controllers
         {
             _recipeRepository.DeleteRecipe(id);
             return NoContent();
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

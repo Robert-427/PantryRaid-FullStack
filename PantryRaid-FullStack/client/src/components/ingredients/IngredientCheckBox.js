@@ -1,7 +1,7 @@
-import { Card, CardBody, CardText, CardTitle } from 'reactstrap';
-import "./Ingredient.css"
+import { Card, CardBody, CardText, CardTitle, Input } from 'reactstrap';
 
-export const Ingredient = ({ingredient}) => {
+export const IngredientCheckBox = ({ingredient}) => {
+
     const cardColor = () => {
         if(ingredient.foodGroup.name == "Dairy") {
             return "warning"
@@ -15,14 +15,12 @@ export const Ingredient = ({ingredient}) => {
             return "primary"
         }
     }
-    
+
   return (
-    <Card className='ingredientCard' color ={cardColor()} outline style={{ width: '12rem' }}>
+    <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
         <CardBody>
             <CardTitle><strong>{ingredient.name}</strong></CardTitle>
-            <CardText>
-                {ingredient.foodGroup.name}
-            </CardText>
+            <Input type="checkbox" />  Is Required
       </CardBody>
     </Card>
   );

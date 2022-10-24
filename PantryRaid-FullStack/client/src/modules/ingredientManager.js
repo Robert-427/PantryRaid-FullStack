@@ -1,12 +1,12 @@
-const baseUrl = 'api/Ingredient'
+const baseUrl = '/api/Ingredient'
 
 export const getAllIngredientsFromApi = () => {
     return fetch(baseUrl)
     .then((res) => res.json())
 };
 
-export const getIngredientsByUserFromApi = (firebaseUserId) => {
-    return fetch(baseUrl+`/GetByUser/${firebaseUserId}`)
+export const getIngredientsByUserFromApi = () => {
+    return fetch(baseUrl+`/GetByUser`)
     .then((res) => res.json())
 }
 

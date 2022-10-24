@@ -1,6 +1,6 @@
 import { getToken } from "./authManager";
 
-const baseUrl = `api/UserProfile`
+const baseUrl = `/api/UserProfile`
 
 export const getAllUsersFromApi = () => {
     return getToken().then((token) => {
@@ -21,9 +21,9 @@ export const getAllUsersFromApi = () => {
     });
 };
 
-export const getUserByFirebaseFromApi = (firebaseUserId) => {
+export const getUserByFirebaseFromApi = () => {
     return getToken().then((token) => {
-        return fetch(baseUrl+`/${firebaseUserId}`, {
+        return fetch(baseUrl, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,
@@ -33,7 +33,7 @@ export const getUserByFirebaseFromApi = (firebaseUserId) => {
             return resp.json();
           } else {
             throw new Error(
-              "An unknown error occurred while trying to get quotes.",
+              "An unknown error occurred.",
             );
           }
         });
@@ -48,7 +48,7 @@ export const addNewUserToApi = (user) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(quote),
+          body: JSON.stringify(user),
         }).then((resp) => {
           if (resp.ok) {
             return resp.json();
@@ -56,7 +56,7 @@ export const addNewUserToApi = (user) => {
             throw new Error("Unauthorized");
           } else {
             throw new Error(
-              "An unknown error occurred while trying to save a new quote.",
+              "An unknown error occurred while trying to save a new user.",
             );
           }
         });
@@ -71,7 +71,7 @@ export const updateUserInApi = (user) => {
             Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
           },
-          body: JSON.stringify(quote),
+          body: JSON.stringify(user),
         }).then((resp) => {
           if (resp.ok) {
             return resp.json();
@@ -79,7 +79,7 @@ export const updateUserInApi = (user) => {
             throw new Error("Unauthorized");
           } else {
             throw new Error(
-              "An unknown error occurred while trying to save a new quote.",
+              "An unknown error occurred while trying to update a user.",
             );
           }
         });

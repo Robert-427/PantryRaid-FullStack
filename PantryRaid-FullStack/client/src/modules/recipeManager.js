@@ -1,4 +1,4 @@
-const baseUrl = `api/Recipe`
+const baseUrl = `/api/Recipe`
 
 export const getAllRecipesFromApi = () => {
     return fetch(baseUrl)

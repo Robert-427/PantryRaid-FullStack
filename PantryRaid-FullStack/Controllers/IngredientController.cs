@@ -1,19 +1,26 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace PantryRaid.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class IngredientController : ControllerBase
     {
         private readonly IIngredientRepository _ingredientRepository;
-        public IngredientController(IIngredientRepository ingredientRepository)
+        private readonly IUserProfileRepository _userProfileRepository;
+        public IngredientController(
+            IIngredientRepository ingredientRepository,
+            IUserProfileRepository userProfileRepository)
         {
             _ingredientRepository = ingredientRepository;
+            _userProfileRepository = userProfileRepository;
         }
 
         // GET: api/<ValuesController>
@@ -24,10 +31,11 @@ namespace PantryRaid.Controllers
             return Ok(ingredients);
         }
 
-        [HttpGet("GetByUser/{firebaseUserId}")]
-        public IActionResult GetByUser(string firebaseUserId)
+        [HttpGet("GetByUser")]
+        public IActionResult GetByUser()
         {
-            return Ok(_ingredientRepository.GetAllIngredientsByUser(firebaseUserId));
+            var currentUser = GetCurrentUserProfile();
+            return Ok(_ingredientRepository.GetAllIngredientsByUser(currentUser.FirebaseUserId));
         }
 
         // GET api/<ValuesController>/5
@@ -51,6 +59,11 @@ namespace PantryRaid.Controllers
         [HttpPost]
         public IActionResult Post(Ingredient ingredient)
         {
+            var currentUserProfile = GetCurrentUserProfile();
+            if(currentUserProfile.IsAdmin == false)
+            {
+                return Unauthorized();
+            }
             _ingredientRepository.AddNewIngredient(ingredient);
             return CreatedAtAction("Get", new { id = ingredient.Id }, ingredient);
         }
@@ -59,12 +72,23 @@ namespace PantryRaid.Controllers
         [HttpPut("{id}")]
         public IActionResult Put(int id, Ingredient ingredient)
         {
+            var currentUserProfile = GetCurrentUserProfile();
+            if(currentUserProfile.IsAdmin == false)
+            {
+                return Unauthorized();
+            }
             if(id != ingredient.Id)
             {
                 return BadRequest();
             }
             _ingredientRepository.UpdateIngredient(ingredient);
             return NoContent();
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

@@ -1,4 +1,4 @@
-const baseUrl = 'api/State'
+const baseUrl = '/api/State'
 
 export const getAllStatesFromApi = () => {
     return fetch(baseUrl)

@@ -119,30 +119,34 @@ namespace PantryRaid.Repositories
 						LEFT JOIN RecipeIngredient ri ON ri.RecipeId = r.Id
 						LEFT JOIN Ingredient i ON ri.IngredientId = i.Id
 						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
-                        WHERE r.Id = @id";
+                        WHERE r.Id = @id
+						ORDER BY g.Id";
 
                     DBUtils.AddParameter(cmd, "@id", recipeId);
 
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         Recipe recipe = null;
-                        if (reader.Read())
+                        while(reader.Read())
                         {
-                            recipe = NewRecipeFromReader(reader);
-                        }
-                        if (DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
-                        {
-                            recipe.Ingredients.Add(new Ingredient()
+                            if (recipe == null)
                             {
-                                Id = DBUtils.GetInt(reader, "IngredientsId"),
-                                Name = DBUtils.GetString(reader, "Ingredient"),
-                                FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
-                                FoodGroup = new FoodGroup()
+                                recipe = NewRecipeFromReader(reader);
+                            }
+                            if (DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
+                            {
+                                recipe.Ingredients.Add(new Ingredient()
                                 {
-                                    Id = DBUtils.GetInt(reader, "GroupId"),
-                                    Name = DBUtils.GetString(reader, "FoodGroup")
-                                }
-                            });
+                                    Id = DBUtils.GetInt(reader, "IngredientsId"),
+                                    Name = DBUtils.GetString(reader, "Ingredient"),
+                                    FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
+                                    FoodGroup = new FoodGroup()
+                                    {
+                                        Id = DBUtils.GetInt(reader, "GroupId"),
+                                        Name = DBUtils.GetString(reader, "FoodGroup")
+                                    }
+                                });
+                            }
                         }
                         return recipe;
                     }
@@ -167,6 +171,29 @@ namespace PantryRaid.Repositories
                     DBUtils.AddParameter(cmd, "@ImageUrl", recipe.ImageUrl);
 
                     recipe.Id = (int)cmd.ExecuteScalar();
+
+                    AddNewRecipeIngredient(recipe.Id, recipe.Ingredients);
+                }
+            }
+        }
+        private void AddNewRecipeIngredient(int recipeId, List<Ingredient> ingredients)
+        {
+            foreach(var ingredient in ingredients)
+            {
+                using (var conn = Connection)
+                {
+                    conn.Open();
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                            INSERT INTO RecipeIngredient (RecipeId, IngredientId)
+                            VALUES (@recipeId, @ingredientId)";
+
+                        DBUtils.AddParameter(cmd, "@recipeId", recipeId);
+                        DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
