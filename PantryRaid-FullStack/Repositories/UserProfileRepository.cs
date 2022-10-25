@@ -71,7 +71,7 @@ namespace PantryRaid.Repositories
                 using(var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
-                        INSERTED INTO UserProfile (FirebaseUserId, DisplayName, Email, FirstName, LastName, 
+                        INSERT INTO UserProfile (FirebaseUserId, DisplayName, Email, FirstName, LastName, 
                                                 Address, City, StateId, ZipCode, IsAdmin)
                         OUTPUT INSERTED.ID
                         VALUES (@FirebaseUserId, @DisplayName, @Email, @FirstName, @LastName, 

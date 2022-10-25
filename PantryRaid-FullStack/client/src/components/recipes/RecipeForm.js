@@ -8,18 +8,8 @@ import "./Recipe.css"
 
 export const RecipeForm = () => {
     const [allIngredients, setAllIngredients] = useState([])
+    const [ingredientsArray, setIngredientsArray] = useState([])
     const navigate = useNavigate()
-    //var checkboxes = document.querySelectorAll("input[type=checkbox][name=checkbox]")
-    let [ingredientsArray, setIngredientsArray] = useState([])
-
-    // checkboxes.forEach(function(checkbox) {
-    //     checkbox.addEventListener('change', function() {
-    //         ingredientsArray = 
-    //             Array.from(checkboxes)
-    //             .filter(i => i.checked)
-    //             .map(i => i.value)
-    //     })
-    // });
 
     const [newRecipe, setNewRecipe] = useState({
         title: "",

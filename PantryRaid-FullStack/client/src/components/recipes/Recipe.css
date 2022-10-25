@@ -6,3 +6,12 @@
 .recipeButton {
     justify-content: space-around;
 }
+
+.recipeContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.ingredientCards {
+    width: 60%;
+}
