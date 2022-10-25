@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
 
@@ -6,6 +7,7 @@ using PantryRaid.Repositories;
 
 namespace PantryRaid.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileController : ControllerBase
@@ -23,22 +25,28 @@ namespace PantryRaid.Controllers
             return Ok(users);
         }
 
-        // GET: api/<ValuesController>
-        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        [HttpGet("{firebaseUserId}")]
         public IActionResult GetUserProfile(string firebaseUserId)
         {
             var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
-            if (user == null)
-            { return NotFound(); }
+            if(user == null)
+            {
+                return NotFound();
+            }
             return Ok(user);
         }
 
-        // GET api/<ValuesController>/5
-        //[HttpGet("{id}")]
-        //public string GetUserById(int id)
-        //{
-        //    return "value";
-        //}
+        // GET: api/<ValuesController>
+        [HttpGet("DoesUserExist/{firebaseUserId}")]
+        public IActionResult DoesUserExist(string firebaseUserId)
+        {
+            var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+            if (user == null)
+            { 
+                return NotFound(); 
+            }
+            return Ok();
+        }
 
         // POST api/<ValuesController>
         [HttpPost]

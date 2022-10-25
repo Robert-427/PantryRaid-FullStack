@@ -1,17 +1,28 @@
-import React, { useState } from "react";
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import React, { useEffect, useState } from "react";
+import { Button, Form, FormGroup, Label, Input, UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { useNavigate } from "react-router-dom";
 import { register } from "../modules/authManager";
+import { getAllStatesFromApi } from "../modules/stateManager";
 
 export default function Register() {
   const navigate = useNavigate();
 
+  const [states, setStates] = useState([])
   const [firstName, setFirstName] = useState();
   const [lastName, setLastName] = useState();
   const [displayName, setDisplayName] = useState();
   const [email, setEmail] = useState();
+  const [address, setAddress] = useState();
+  const [city, setCity] = useState();
+  const [stateId, setStateId] = useState();
+  const [zipCode, setZipCode] = useState();
+  const [isAdmin, setIsAdmin] = useState();
   const [password, setPassword] = useState();
   const [confirmPassword, setConfirmPassword] = useState();
+
+  useEffect(() => {
+    getAllStatesFromApi().then(data => setStates(data));
+  }, []);
 
   const registerClick = (e) => {
     e.preventDefault();
@@ -22,8 +33,12 @@ export default function Register() {
         firstName,
         lastName,
         displayName,
-        imageLocation,
         email,
+        address,
+        city,
+        stateId,
+        zipCode,
+        isAdmin
       };
       register(userProfile, password).then(() => navigate("/"));
     }
@@ -65,11 +80,46 @@ export default function Register() {
           />
         </FormGroup>
         <FormGroup>
-          <Label htmlFor="imageLocation">Profile Image URL</Label>
+          <Label htmlFor="address">Street Address</Label>
           <Input
-            id="imageLocation"
+            id="address"
             type="text"
-            onChange={(e) => setImageLocation(e.target.value)}
+            onChange={(e) => setAddress(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="city">City</Label>
+          <Input
+            id="city"
+            type="text"
+            onChange={(e) => setCity(e.target.value)}
+          />
+        </FormGroup>
+        <FormGroup>
+        <Label for="state">State:</Label>
+            <UncontrolledDropdown className="me-2" direction="down">
+                <DropdownToggle caret color="light" >
+                    Pick your State
+                </DropdownToggle>
+                <DropdownMenu className="sort-dropdown">
+                    {states.map(state => {
+                        return (
+                            <DropdownItem key={state.id} value={state.name} className="state--name" 
+                            onClick={(e) => setStateId(e.target.value)}
+                            >
+                                {state.name}
+                            </DropdownItem>
+                        )
+                    })}
+                </DropdownMenu>
+            </UncontrolledDropdown>
+        </FormGroup>
+        <FormGroup>
+          <Label htmlFor="zipCode">Zip Code</Label>
+          <Input
+            id="zipCode"
+            type="number"
+            onChange={(e) => setZipCode(e.target.value)}
           />
         </FormGroup>
         <FormGroup>

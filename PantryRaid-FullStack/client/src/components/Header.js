@@ -20,7 +20,7 @@ export default function Header({ isLoggedIn }) {
     <div>
       <Navbar className="navbar navbar-dark bg-dark" expand="md">
         <NavbarBrand tag={RRNavLink} to="/">
-          <img className="headerLogo" src={process.env.PUBLIC_URL + "/quill-logo.png"} alt="[insert image here]" />
+          {/* <img className="headerLogo" src={process.env.PUBLIC_URL + "/quill-logo.png"} alt="[insert image here]" /> */}
           PANTRY RAID
         </NavbarBrand>
         <NavbarToggler onClick={toggle} />
@@ -31,6 +31,15 @@ export default function Header({ isLoggedIn }) {
               <>
                 <NavItem>
                   <NavLink tag={RRNavLink} to="/">HOME</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={RRNavLink} to="/myIngredients">MY PANTRY</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={RRNavLink} to="/Ingredients">ALL INGREDIENTS</NavLink>
+                </NavItem>
+                <NavItem>
+                    <NavLink tag={RRNavLink} to="/Recipes">ALL RECIPES</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink onClick={logout}>LOGOUT</NavLink>

@@ -3,6 +3,11 @@ import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "./Login";
 import Register from "./Register";
 import Hello from "./Hello";
+import { MyIngredientsList } from "./ingredients/MyIngredientsList";
+import { AllRecipes } from "./recipes/AllRecipeList";
+import { RecipeDetails } from "./recipes/RecipeDetails";
+import { AllIngredients } from "./ingredients/AllIngredientsList";
+import { RecipeForm } from "./recipes/RecipeForm";
 
 
 export default function ApplicationViews({ isLoggedIn }) {
@@ -16,6 +21,11 @@ export default function ApplicationViews({ isLoggedIn }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
+          <Route path="myIngredients" element={<MyIngredientsList />} />
+          <Route path="Ingredients" element={<AllIngredients />} />
+          <Route path="Recipes" element={<AllRecipes />} />
+          <Route path="Recipes/details/:recipeId/" element={<RecipeDetails />} />
+          <Route path="Recipes/new" element={<RecipeForm />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>

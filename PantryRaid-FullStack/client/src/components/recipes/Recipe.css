@@ -1,0 +1,8 @@
+.buttonRow {
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+.recipeButton {
+    justify-content: space-around;
+}
