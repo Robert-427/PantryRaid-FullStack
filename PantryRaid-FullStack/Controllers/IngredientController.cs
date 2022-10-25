@@ -59,11 +59,11 @@ namespace PantryRaid.Controllers
         [HttpPost]
         public IActionResult Post(Ingredient ingredient)
         {
-            var currentUserProfile = GetCurrentUserProfile();
-            if(currentUserProfile.IsAdmin == false)
-            {
-                return Unauthorized();
-            }
+            //var currentUserProfile = GetCurrentUserProfile();
+            //if(currentUserProfile.IsAdmin == false)
+            //{
+            //    return Unauthorized();
+            //}
             _ingredientRepository.AddNewIngredient(ingredient);
             return CreatedAtAction("Get", new { id = ingredient.Id }, ingredient);
         }

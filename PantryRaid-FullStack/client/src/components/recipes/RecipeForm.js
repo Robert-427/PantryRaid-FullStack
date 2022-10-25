@@ -7,34 +7,35 @@ import { IngredientCheckBox } from "../ingredients/IngredientCheckBox";
 import "./Recipe.css"
 
 export const RecipeForm = () => {
-    const [ingredientsForRecipe, setIngredientsForRecipe] = useState([])
     const [allIngredients, setAllIngredients] = useState([])
     const navigate = useNavigate()
+    //var checkboxes = document.querySelectorAll("input[type=checkbox][name=checkbox]")
+    let [ingredientsArray, setIngredientsArray] = useState([])
 
-    const [newRecipe, update] = useState({
+    // checkboxes.forEach(function(checkbox) {
+    //     checkbox.addEventListener('change', function() {
+    //         ingredientsArray = 
+    //             Array.from(checkboxes)
+    //             .filter(i => i.checked)
+    //             .map(i => i.value)
+    //     })
+    // });
+
+    const [newRecipe, setNewRecipe] = useState({
         title: "",
         imageUrl: "",
         website: "",
-        description: "",
-        ingredients: []
+        description: ""
     })
 
-    const SaveButtonClick = (event) => {
-        event.preventDefault()
-
-        if (newRecipe.imageUrl === "") {
-            newRecipe.imageUrl = null
-        }
-        if (newRecipe.website === "") {
-            newRecipe.website = null
-        }
+    const SaveButtonClick = () => {
 
         const recipeToSendToApi = {
             title: newRecipe.title,
-            imageUrl: newRecipe.imageUrl,
-            website: newRecipe.website,
+            imageUrl: newRecipe.imageUrl === "" ? null : newRecipe.imageUrl,
+            website: newRecipe.website === "" ? null : newRecipe.website,
             description: newRecipe.description,
-            ingredients: newRecipe.ingredients
+            ingredients: ingredientsArray
         }
 
         return addNewRecipeToApi(recipeToSendToApi)
@@ -52,7 +53,7 @@ export const RecipeForm = () => {
             <div className="container">
                 <div className="row justify-content-center">
                     {allIngredients.map((ingredient) => (
-                        <IngredientCheckBox ingredient={ingredient} key={ingredient.id} />
+                        <IngredientCheckBox ingredient={ingredient} key={ingredient.id} ingredientsArray={ingredientsArray} setIngredientsArray={setIngredientsArray}/>
                     ))}
                 </div>
             </div>
@@ -69,7 +70,7 @@ export const RecipeForm = () => {
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.title = evt.target.value
-                update(copy)
+                setNewRecipe(copy)
             }}
             />
         </FormGroup>
@@ -84,7 +85,7 @@ export const RecipeForm = () => {
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.description = evt.target.value
-                update(copy)
+                setNewRecipe(copy)
             }}
             />
         </FormGroup>
@@ -106,7 +107,7 @@ export const RecipeForm = () => {
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.website = evt.target.value
-                update(copy)
+                setNewRecipe(copy)
             }}
             />
         </FormGroup>
@@ -121,7 +122,7 @@ export const RecipeForm = () => {
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.imageUrl = evt.target.value
-                update(copy)
+                setNewRecipe(copy)
             }}
             />
             <FormText>

@@ -186,11 +186,12 @@ namespace PantryRaid.Repositories
                     using (var cmd = conn.CreateCommand())
                     {
                         cmd.CommandText = @"
-                            INSERT INTO RecipeIngredient (RecipeId, IngredientId)
-                            VALUES (@recipeId, @ingredientId)";
+                            INSERT INTO RecipeIngredient (RecipeId, IngredientId, IsRequired)
+                            VALUES (@recipeId, @ingredientId, @isRequired)";
 
                         DBUtils.AddParameter(cmd, "@recipeId", recipeId);
                         DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
+                        DBUtils.AddParameter(cmd, "@isRequired", 1);
 
                         cmd.ExecuteNonQuery();
                     }

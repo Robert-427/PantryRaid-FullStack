@@ -54,7 +54,7 @@ namespace PantryRaid.Controllers
         public IActionResult Post(Recipe recipe)
         {
             _recipeRepository.AddNewRecipe(recipe);
-            return CreatedAtAction("Get", new {id = recipe.Id}, recipe);
+            return NoContent();
         }
 
         // PUT api/<ValuesController>/5
