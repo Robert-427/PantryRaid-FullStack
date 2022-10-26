@@ -7,7 +7,7 @@ using PantryRaid.Repositories;
 
 namespace PantryRaid.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class UserProfileController : ControllerBase
@@ -50,10 +50,12 @@ namespace PantryRaid.Controllers
 
         // POST api/<ValuesController>
         [HttpPost]
-        public IActionResult Post(UserProfile user)
+        public IActionResult Register(UserProfile user)
         {
+            user.IsAdmin = false;
             _userProfileRepository.AddNewUser(user);
-            return CreatedAtAction("Get", new {id = user.Id}, user);
+            return CreatedAtAction(
+                nameof(GetUserProfile), new { firebaseUserId = user.FirebaseUserId }, user);
         }
 
         // PUT api/<ValuesController>/5

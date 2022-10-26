@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Card, CardBody, CardText, CardTitle, Input } from 'reactstrap';
+import "./Ingredient.css"
 
 export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredientsArray}) => {
 

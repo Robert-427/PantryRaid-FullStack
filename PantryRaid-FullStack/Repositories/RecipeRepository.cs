@@ -70,12 +70,12 @@ namespace PantryRaid.Repositories
                 }
             }
         }
-        public Recipe GetRecipeByIngredient(int ingredientId)
+        public List<Recipe> GetAllRecipesByIngredient(int ingredientId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
-                using (var cmd = conn.CreateCommand())
+                using(var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         SELECT	r.Id, r.Title, r.Description, r.ImageUrl, r.Website, 
@@ -86,23 +86,39 @@ namespace PantryRaid.Repositories
 						LEFT JOIN RecipeIngredient ri ON ri.RecipeId = r.Id
 						LEFT JOIN Ingredient i ON ri.IngredientId = i.Id
 						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
-                        WHERE i.Id = @id
-						ORDER BY g.Id";
+                        WHERE i.Id = @id";
 
                     DBUtils.AddParameter(cmd, "@id", ingredientId);
 
-                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
-                        Recipe recipe = null;
-                        if(reader.Read())
+                        var recipes = new List<Recipe>();
+                        while (reader.Read())
                         {
-                            recipe = NewRecipeFromReader(reader);
-                        }
-                        return recipe;
+                            var recipeId = DBUtils.GetInt(reader, "Id");
+
+                            var exisitingRecipe = recipes.FirstOrDefault(r => r.Id == recipeId);
+                            if (exisitingRecipe == null)
+                            {
+                                exisitingRecipe = new Recipe()
+                                {
+                                    Id = DBUtils.GetInt(reader, "Id"),
+                                    Title = DBUtils.GetString(reader, "Title"),
+                                    Description = DBUtils.GetString(reader, "Description"),
+                                    Website = DBUtils.GetString(reader, "Website"),
+                                    ImageUrl = DBUtils.GetString(reader, "ImageUrl"),
+                                    Ingredients = new List<Ingredient>()
+                                };
+                                recipes.Add(exisitingRecipe);
+                            }
+                        };
+                        reader.Close();
+                        return recipes;
                     }
                 }
             }
         }
+      
         public Recipe GetRecipeById(int recipeId)
         {
             using (var conn = Connection)

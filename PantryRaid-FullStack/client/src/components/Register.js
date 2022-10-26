@@ -45,103 +45,105 @@ export default function Register() {
   };
 
   return (
-    <Form onSubmit={registerClick}>
-      <fieldset>
-        <FormGroup>
-          <Label htmlFor="firstName">First Name</Label>
-          <Input
-            id="firstName"
-            type="text"
-            onChange={(e) => setFirstName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="lastName">Last Name</Label>
-          <Input
-            id="lastName"
-            type="text"
-            onChange={(e) => setLastName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="displayName">Display Name</Label>
-          <Input
-            id="displayName"
-            type="text"
-            onChange={(e) => setDisplayName(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">Email</Label>
-          <Input
-            id="email"
-            type="text"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="address">Street Address</Label>
-          <Input
-            id="address"
-            type="text"
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="city">City</Label>
-          <Input
-            id="city"
-            type="text"
-            onChange={(e) => setCity(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-        <Label for="state">State:</Label>
-            <UncontrolledDropdown className="me-2" direction="down">
-                <DropdownToggle caret color="light" >
-                    Pick your State
-                </DropdownToggle>
-                <DropdownMenu className="sort-dropdown">
-                    {states.map(state => {
-                        return (
-                            <DropdownItem key={state.id} value={state.name} className="state--name" 
-                            onClick={(e) => setStateId(e.target.value)}
-                            >
-                                {state.name}
-                            </DropdownItem>
-                        )
-                    })}
-                </DropdownMenu>
-            </UncontrolledDropdown>
-        </FormGroup>
-        <FormGroup>
-          <Label htmlFor="zipCode">Zip Code</Label>
-          <Input
-            id="zipCode"
-            type="number"
-            onChange={(e) => setZipCode(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="password">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Label for="confirmPassword">Confirm Password</Label>
-          <Input
-            id="confirmPassword"
-            type="password"
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
-        </FormGroup>
-        <FormGroup>
-          <Button>Register</Button>
-        </FormGroup>
-      </fieldset>
-    </Form>
+    <div className="container">
+        <Form onSubmit={registerClick}>
+        <fieldset>
+            <FormGroup>
+            <Label htmlFor="firstName">First Name</Label>
+            <Input
+                id="firstName"
+                type="text"
+                onChange={(e) => setFirstName(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="lastName">Last Name</Label>
+            <Input
+                id="lastName"
+                type="text"
+                onChange={(e) => setLastName(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="displayName">Display Name</Label>
+            <Input
+                id="displayName"
+                type="text"
+                onChange={(e) => setDisplayName(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label for="email">Email</Label>
+            <Input
+                id="email"
+                type="text"
+                onChange={(e) => setEmail(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="address">Street Address</Label>
+            <Input
+                id="address"
+                type="text"
+                onChange={(e) => setAddress(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="city">City</Label>
+            <Input
+                id="city"
+                type="text"
+                onChange={(e) => setCity(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label for="state">State:</Label>
+                <UncontrolledDropdown className="me-2" direction="down">
+                    <DropdownToggle caret color="light" >
+                        Pick your State
+                    </DropdownToggle>
+                    <DropdownMenu className="sort-dropdown">
+                        {states.map(state => {
+                            return (
+                                <DropdownItem key={state.id} value={state.id} className="state--name" 
+                                onClick={(e) => setStateId(e.target.value)}
+                                >
+                                    {state.name}
+                                </DropdownItem>
+                            )
+                        })}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+            </FormGroup>
+            <FormGroup>
+            <Label htmlFor="zipCode">Zip Code</Label>
+            <Input
+                id="zipCode"
+                type="number"
+                onChange={(e) => setZipCode(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label for="password">Password</Label>
+            <Input
+                id="password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Label for="confirmPassword">Confirm Password</Label>
+            <Input
+                id="confirmPassword"
+                type="password"
+                onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+            </FormGroup>
+            <FormGroup>
+            <Button>Register</Button>
+            </FormGroup>
+        </fieldset>
+        </Form>
+    </div>
   );
 }

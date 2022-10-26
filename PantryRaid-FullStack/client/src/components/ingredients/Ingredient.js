@@ -15,13 +15,16 @@ export const Ingredient = ({ingredient}) => {
             return "primary"
         }
     }
-    
+
   return (
     <Card className='ingredientCard' color ={cardColor()} outline style={{ width: '12rem' }}>
         <CardBody>
             <CardTitle><strong>{ingredient.name}</strong></CardTitle>
-            <CardText>
-                {ingredient.foodGroup.name}
+            <CardText className='cardText'>
+                {ingredient.foodGroup.name} 
+                <button className='quantityButton'>+</button> 
+                
+                <button className='quantityButton'> - </button>
             </CardText>
       </CardBody>
     </Card>
