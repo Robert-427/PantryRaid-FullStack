@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { getAllIngredientsFromApi } from "../../modules/ingredientManager";
 import { Ingredient } from "./Ingredient";
+import "./Ingredient.css"
 
 export const AllIngredients = () => {
     const [ingredients, setIngredients] = useState([]);

@@ -3,3 +3,17 @@
     justify-content: space-between;
     background-color: burlywood;
 }
+
+.myPantryContainer {
+    display: flex;
+    flex-direction: row;
+}
+
+.ingredients {
+    width: 60%;
+}
+
+.cardText{
+    display: flex;
+    justify-content: space-between;
+}

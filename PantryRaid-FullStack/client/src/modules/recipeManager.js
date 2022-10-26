@@ -1,3 +1,5 @@
+import { getToken } from "./authManager";
+
 const baseUrl = `/api/Recipe`
 
 export const getAllRecipesFromApi = () => {
@@ -13,6 +15,25 @@ export const getRecipeByIngredientFromApi = (ingredientId) => {
 export const getRecipeByIdFromApi = (recipeId) => {
     return fetch(baseUrl+`/GetByRecipe/${recipeId}`)
     .then((res) => res.json())
+}
+
+export const getUsableRecipesFromApi = () => {
+    return getToken().then((token) => {
+        return fetch(baseUrl+`/GetUsableRecipes`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => {
+            if(res.ok) {
+                return res.json()
+            } else {
+                throw new Error(
+                    "An unknown error occured while getting recipes"
+                )
+            }
+        })
+    })
 }
 
 export const addNewRecipeToApi = (recipe) => {

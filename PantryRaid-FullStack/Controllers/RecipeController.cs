@@ -2,6 +2,8 @@
 using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -15,12 +17,15 @@ namespace PantryRaid.Controllers
     {
         private readonly IRecipeRepository _recipeRepository;
         private readonly IUserProfileRepository _userProfileRepository;
+        private readonly IIngredientRepository _ingredientRepository;
         public RecipeController(
             IRecipeRepository recipeRepository,
-            IUserProfileRepository userProfileRepsoitory)
+            IUserProfileRepository userProfileRepsoitory,
+            IIngredientRepository ingredientRepository)
         {
             _recipeRepository = recipeRepository;
             _userProfileRepository = userProfileRepsoitory;
+            _ingredientRepository = ingredientRepository;
         }
 
         // GET: api/<ValuesController>
@@ -32,9 +37,9 @@ namespace PantryRaid.Controllers
 
         // GET api/<ValuesController>/5
         [HttpGet("GetByIngredient/{ingredientId}")]
-        public IActionResult GetRecipeByIngredient(int ingredientId)
+        public IActionResult GetRecipesByIngredient(int ingredientId)
         {
-            var recipe = _recipeRepository.GetRecipeByIngredient(ingredientId);
+            var recipe = _recipeRepository.GetAllRecipesByIngredient(ingredientId);
             if(recipe == null)
             { return NotFound(); }
             return Ok(recipe);
@@ -47,6 +52,46 @@ namespace PantryRaid.Controllers
             if(recipe == null)
             { return NotFound(); }
             return Ok(recipe);
+        }
+
+        [HttpGet("GetUsableRecipes")]
+        public IActionResult GetRecipesUserCanMake()
+        {
+            var currentUser = GetCurrentUserProfile();
+            var allRecipes = _recipeRepository.GetAllRecipesWithIngredients();
+            var usersIngredients = _ingredientRepository.GetAllIngredientsByUser(currentUser.FirebaseUserId);
+            var usableRecipeList = allRecipes.Where(r => 
+            {
+                foreach(var ingredient in r.Ingredients)
+                {
+                    var foundIngredient = usersIngredients.FirstOrDefault(i => ingredient.Id == i.Id);
+                    if(foundIngredient == null)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            });
+
+            //foreach (var recipe in allRecipes)
+            //{
+            //    foreach (var recipeIngredient in recipe.Ingredients)
+            //    {
+            //        foreach (var userIngredient in usersIngredients)
+            //        {
+            //            if (recipeIngredient.Id == userIngredient.Id) 
+            //            {
+            //                usableRecipeList.Add(recipe);
+            //            }
+            //        }
+            //    }
+            //};
+
+            //foreach(var userIngredient in usersIngredients)
+            //{
+            //    usableRecipeList = _recipeRepository.GetAllRecipesByIngredient(userIngredient.Id);
+            //}
+            return Ok(usableRecipeList);
         }
 
         // POST api/<ValuesController>
