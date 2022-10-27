@@ -234,6 +234,8 @@ namespace PantryRaid.Repositories
                     DBUtils.AddParameter(cmd, "@Website", recipe.Website);
                     DBUtils.AddParameter(cmd, "@ImageUrl", recipe.ImageUrl);
 
+                    DBUtils.AddParameter(cmd, "@id", recipe.Id);
+
                     cmd.ExecuteNonQuery();
                 }
             }
