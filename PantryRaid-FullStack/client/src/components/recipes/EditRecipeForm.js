@@ -1,26 +1,38 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, FormText, Input, Label } from "reactstrap";
-import { getAllIngredientsFromApi } from "../../modules/ingredientManager";
-import { addNewRecipeToApi } from "../../modules/recipeManager";
+import { getAllIngredientsByRecipeFromApi, getAllIngredientsFromApi } from "../../modules/ingredientManager";
+import { getRecipeByIdFromApi, updateRecipeInApi } from "../../modules/recipeManager";
 import { IngredientCheckBox } from "../ingredients/IngredientCheckBox";
 import "./Recipe.css"
 
-export const RecipeForm = () => {
+export const RecipeEditForm = () => {
     const [allIngredients, setAllIngredients] = useState([])
     const [ingredientsArray, setIngredientsArray] = useState([])
+    const [currentRecipe, setCurrentRecipe] = useState({})
     const navigate = useNavigate()
+    const {recipeId} = useParams()
+
+    useEffect(() => {
+        getRecipeByIdFromApi(recipeId).then(r => setCurrentRecipe(r))
+    }, [])
+
+    useEffect(() => {
+        getAllIngredientsByRecipeFromApi(recipeId).then(ri => setIngredientsArray(ri))
+    }, [])
 
     const [newRecipe, setNewRecipe] = useState({
-        title: "",
-        imageUrl: "",
-        website: "",
-        description: ""
+        id: recipeId,
+        title: currentRecipe.title,
+        imageUrl: currentRecipe.imageUrl,
+        website: currentRecipe.website,
+        description: currentRecipe.description
     })
 
     const SaveButtonClick = () => {
 
         const recipeToSendToApi = {
+            id: newRecipe.id,
             title: newRecipe.title,
             imageUrl: newRecipe.imageUrl === "" ? null : newRecipe.imageUrl,
             website: newRecipe.website === "" ? null : newRecipe.website,
@@ -28,7 +40,7 @@ export const RecipeForm = () => {
             ingredients: ingredientsArray
         }
 
-        return addNewRecipeToApi(recipeToSendToApi)
+        return updateRecipeInApi(recipeToSendToApi)
         .then(() => {
             navigate("/Recipes")
         })
@@ -50,13 +62,30 @@ export const RecipeForm = () => {
         )
     }
 
+    const hasWebsite = () => {
+        if (currentRecipe.website === null) {
+            return "Enter website here..."
+        } else {
+            return `${currentRecipe.website}`
+        }
+    }
+
+    const hasImage = () => {
+        if (currentRecipe.imageUrl === null) {
+            return "Enter image URL here..."
+        } else {
+            return `${currentRecipe.imageUrl}`
+        }
+    }
+
     return <div className="container">
     <Form>
         <FormGroup>
             <Label for="title">Recipe Title</Label>
             <Input
             name="title"
-            placeholder="New recipe title here..."
+            placeholder={currentRecipe.title}
+            defaultValue={currentRecipe.title}
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.title = evt.target.value
@@ -70,7 +99,8 @@ export const RecipeForm = () => {
             </Label>
             <Input
             name="directions"
-            placeholder="Enter detailed step-by-step directions for entire recipe here..."
+            placeholder={currentRecipe.description}
+            defaultValue={currentRecipe.description}
             type="textarea"
             onChange={(evt) => {
                 const copy = {...newRecipe}
@@ -92,7 +122,7 @@ export const RecipeForm = () => {
             <Input
             id="website"
             name="url"
-            placeholder="Enter website here..."
+            placeholder={hasWebsite()}
             type="url"
             onChange={(evt) => {
                 const copy = {...newRecipe}
@@ -109,6 +139,7 @@ export const RecipeForm = () => {
             id="image"
             name="url"
             type="url"
+            placeholder={hasImage()}
             onChange={(evt) => {
                 const copy = {...newRecipe}
                 copy.imageUrl = evt.target.value

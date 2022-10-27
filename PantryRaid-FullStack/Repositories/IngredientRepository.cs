@@ -144,6 +144,25 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public void AddUserIngredient(int userId, int ingredientId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserIngredient (UserProfileId, IngredientId, Quantity)
+                        VALUES (@userProfileId, @ingredientId, @quantity)";
+
+                    DBUtils.AddParameter(cmd, "@userProfileId", userId);
+                    DBUtils.AddParameter(cmd, "@ingredientId", ingredientId);
+                    DBUtils.AddParameter(cmd, "@quantity", 1);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public void UpdateIngredient(Ingredient ingredient)
         {
             using(var conn = Connection)
@@ -161,6 +180,22 @@ namespace PantryRaid.Repositories
                     DBUtils.AddParameter(cmd, "FoodGroupId", ingredient.FoodGroupId);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void UpdateUserIngredient(int userIngredientId, int quantity)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        UPDATE UserIngredient
+                        SET UserProfileId = @userProfileId,
+                            IngredientId = @ingredientId,
+                            Quantity = @quantity
+                        WHERE Id = @Id";
                 }
             }
         }

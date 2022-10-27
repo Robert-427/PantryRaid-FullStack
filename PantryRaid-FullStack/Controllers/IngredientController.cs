@@ -68,6 +68,14 @@ namespace PantryRaid.Controllers
             return CreatedAtAction("Get", new { id = ingredient.Id }, ingredient);
         }
 
+        [HttpPost("AddUserIngredient/{ingredientId})")]
+        public IActionResult Post(int ingredientId)
+        {
+            var currentUser = GetCurrentUserProfile();
+            _ingredientRepository.AddUserIngredient(currentUser.Id, ingredientId);
+            return NoContent();
+        }
+
         // PUT api/<ValuesController>/5
         [HttpPut("{id}")]
         public IActionResult Put(int id, Ingredient ingredient)

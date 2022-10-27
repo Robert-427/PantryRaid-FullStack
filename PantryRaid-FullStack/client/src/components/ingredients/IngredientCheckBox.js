@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { Card, CardBody, CardText, CardTitle, Input } from 'reactstrap';
 import "./Ingredient.css"
 
@@ -18,6 +17,15 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
         }
     }
 
+    const hasIngredient = (recipeIngredients) => {
+        for (const rIngredient of recipeIngredients) {
+            if(rIngredient.id === ingredient.id) {
+                return true
+            }
+        }
+        return false
+    }
+
     const checkboxChangeHandler = (event) => {
         const ingredientCopy = {...ingredient}
         const ingredientsArrayCopy = structuredClone(ingredientsArray)
@@ -30,10 +38,11 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
     }
 
   return (
-    <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
+      <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
         <CardBody>
             <CardTitle><strong>{ingredient.name}</strong></CardTitle>
-            <Input onChange={checkboxChangeHandler} type="checkbox" name='checkbox' value={ingredient} />  Is Required
+            <Input onChange={checkboxChangeHandler} defaultChecked={hasIngredient(ingredientsArray)} type="checkbox" name='checkbox' defaultValue={ingredient} id={ingredient.id}/>  Is Required
+            
       </CardBody>
     </Card>
   );

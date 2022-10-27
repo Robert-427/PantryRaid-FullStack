@@ -48,6 +48,7 @@ export const RecipeDetails = () => {
                             </CardLink>
                         </CardBody>
                         <Button color="primary" onClick={() => navigate("/Recipes")}>Return</Button>
+                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}>Edit</Button>
                     </Card>
                 </div>
             </div>

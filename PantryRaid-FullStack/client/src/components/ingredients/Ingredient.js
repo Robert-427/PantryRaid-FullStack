@@ -21,10 +21,7 @@ export const Ingredient = ({ingredient}) => {
         <CardBody>
             <CardTitle><strong>{ingredient.name}</strong></CardTitle>
             <CardText className='cardText'>
-                {ingredient.foodGroup.name} 
-                <button className='quantityButton'>+</button> 
-                
-                <button className='quantityButton'> - </button>
+                {ingredient.foodGroup.name}
             </CardText>
       </CardBody>
     </Card>

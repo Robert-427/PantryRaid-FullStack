@@ -72,25 +72,6 @@ namespace PantryRaid.Controllers
                 }
                 return true;
             });
-
-            //foreach (var recipe in allRecipes)
-            //{
-            //    foreach (var recipeIngredient in recipe.Ingredients)
-            //    {
-            //        foreach (var userIngredient in usersIngredients)
-            //        {
-            //            if (recipeIngredient.Id == userIngredient.Id) 
-            //            {
-            //                usableRecipeList.Add(recipe);
-            //            }
-            //        }
-            //    }
-            //};
-
-            //foreach(var userIngredient in usersIngredients)
-            //{
-            //    usableRecipeList = _recipeRepository.GetAllRecipesByIngredient(userIngredient.Id);
-            //}
             return Ok(usableRecipeList);
         }
 
