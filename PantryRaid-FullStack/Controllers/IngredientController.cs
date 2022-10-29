@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System.Collections.Generic;
 using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -68,12 +69,13 @@ namespace PantryRaid.Controllers
             return CreatedAtAction("Get", new { id = ingredient.Id }, ingredient);
         }
 
-        [HttpPost("AddUserIngredient/{ingredientId})")]
-        public IActionResult Post(int ingredientId)
+        //[Authorize]
+        [HttpPost("UpdateUsersIngredients")]
+        public IActionResult Post(List<Ingredient> ingredients)
         {
             var currentUser = GetCurrentUserProfile();
-            _ingredientRepository.AddUserIngredient(currentUser.Id, ingredientId);
-            return NoContent();
+            _ingredientRepository.UpdateUsersIngredients(currentUser.Id, ingredients);
+            return Ok(ingredients);
         }
 
         // PUT api/<ValuesController>/5
@@ -81,10 +83,10 @@ namespace PantryRaid.Controllers
         public IActionResult Put(int id, Ingredient ingredient)
         {
             var currentUserProfile = GetCurrentUserProfile();
-            if(currentUserProfile.IsAdmin == false)
-            {
-                return Unauthorized();
-            }
+            //if(currentUserProfile.IsAdmin == false)
+            //{
+            //    return Unauthorized();
+            //}
             if(id != ingredient.Id)
             {
                 return BadRequest();

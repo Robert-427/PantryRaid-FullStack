@@ -9,9 +9,10 @@ import { RecipeDetails } from "./recipes/RecipeDetails";
 import { AllIngredients } from "./ingredients/AllIngredientsList";
 import { RecipeForm } from "./recipes/RecipeForm";
 import { RecipeEditForm } from "./recipes/EditRecipeForm";
+import { EditMyIngredients } from "./ingredients/EditMyIngredients";
 
 
-export default function ApplicationViews({ isLoggedIn }) {
+export default function ApplicationViews({ isLoggedIn, isAdmin }) {
   return (
     <main>
       <Routes>
@@ -23,6 +24,7 @@ export default function ApplicationViews({ isLoggedIn }) {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="myIngredients" element={<MyIngredientsList />} />
+          <Route path="myIngredients/edit" element={<EditMyIngredients />} />
           <Route path="Ingredients" element={<AllIngredients />} />
           <Route path="Recipes" element={<AllRecipes />} />
           <Route path="Recipes/details/:recipeId" element={<RecipeDetails />} />

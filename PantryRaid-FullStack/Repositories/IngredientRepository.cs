@@ -183,19 +183,31 @@ namespace PantryRaid.Repositories
                 }
             }
         }
-        public void UpdateUserIngredient(int userIngredientId, int quantity)
+        public void UpdateUsersIngredients(int userId, List<Ingredient> ingredients)
         {
             using(var conn = Connection)
             {
                 conn.Open();
                 using(var cmd = conn.CreateCommand())
                 {
-                    cmd.CommandText = @"
-                        UPDATE UserIngredient
-                        SET UserProfileId = @userProfileId,
-                            IngredientId = @ingredientId,
-                            Quantity = @quantity
-                        WHERE Id = @Id";
+                    cmd.CommandText = @"DELETE FROM UserIngredient WHERE UserProfileId = @UserProfileId";
+                    DBUtils.AddParameter(cmd, "@UserProfileId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+                foreach (var ingredient in ingredients)
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                            INSERT INTO UserIngredient (UserProfileId, IngredientId, Quantity)
+                            VALUES (@UserProfileId, @ingredientId, @isRequired)";
+
+                        DBUtils.AddParameter(cmd, "@UserProfileId", userId);
+                        DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
+                        DBUtils.AddParameter(cmd, "@isRequired", 10);
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }

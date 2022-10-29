@@ -2,7 +2,6 @@ import { getToken } from "./authManager";
 
 const baseUrl = '/api/Ingredient'
 
-
 export const getAllIngredientsFromApi = () => {
     return fetch(baseUrl)
     .then((res) => res.json())
@@ -27,13 +26,13 @@ export const getIngredientsByUserFromApi = () => {
     })
 }
 
-export const getIngredientByIdFromApi = (ingredientId) => {
-    return fetch(baseUrl+`/${ingredientId}`)
+export const getAllIngredientsByRecipeFromApi = (recipeId) => {
+    return fetch(baseUrl+`/GetByRecipe/${recipeId}`)
     .then((res) => res.json())
 };
 
-export const getAllIngredientsByRecipeFromApi = (recipeId) => {
-    return fetch(baseUrl+`/GetByRecipe/${recipeId}`)
+export const getIngredientByIdFromApi = (ingredientId) => {
+    return fetch(baseUrl+`/${ingredientId}`)
     .then((res) => res.json())
 };
 
@@ -56,3 +55,24 @@ export const updateIngredintInApi = (ingredient) => {
         body: JSON.stringify(ingredient),
     });
 };
+
+export const updateUsersIngredientsInApi = (ingredients) => {
+    return getToken().then((token) => {
+        return fetch(baseUrl+`/UpdateUsersIngredients`, {
+            method: "POST",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ingredients),
+        }).then((res) => {
+            if(res.ok) {
+                return res.json()
+            } else {
+                throw new Error(
+                    "An unknown error occured while updating user's ingredients"
+                )
+            }
+        })
+    })
+}

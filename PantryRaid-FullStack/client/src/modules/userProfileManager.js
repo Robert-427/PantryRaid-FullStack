@@ -23,7 +23,7 @@ export const getAllUsersFromApi = () => {
 
 export const getUserByFirebaseFromApi = () => {
     return getToken().then((token) => {
-        return fetch(baseUrl, {
+        return fetch(baseUrl+`/GetCurrentUser`, {
           method: "GET",
           headers: {
             Authorization: `Bearer ${token}`,

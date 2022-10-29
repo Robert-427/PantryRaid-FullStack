@@ -12,6 +12,6 @@ namespace PantryRaid.Repositories
         public void AddNewIngredient(Ingredient ingredient);
         public void AddUserIngredient(int userId, int ingredientId);
         public void UpdateIngredient(Ingredient ingredient);
-        public void UpdateUserIngredient(int userIngredientId, int quantity);
+        public void UpdateUsersIngredients(int userId, List<Ingredient> ingredients);
     }
 }

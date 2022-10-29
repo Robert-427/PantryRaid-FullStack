@@ -17,9 +17,12 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
         }
     }
 
-    const hasIngredient = (recipeIngredients) => {
-        for (const rIngredient of recipeIngredients) {
-            if(rIngredient.id === ingredient.id) {
+    const hasIngredient = () => {
+        if(!ingredientsArray){
+            return false
+        }
+        for (const ia of ingredientsArray) {
+            if(ia.id === ingredient.id) {
                 return true
             }
         }
@@ -36,14 +39,17 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
             setIngredientsArray(ingredientsArrayCopy.filter((ing) => ing.id !== ingredient.id))
         }
     }
-
-  return (
-      <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
-        <CardBody>
-            <CardTitle><strong>{ingredient.name}</strong></CardTitle>
-            <Input onChange={checkboxChangeHandler} defaultChecked={hasIngredient(ingredientsArray)} type="checkbox" name='checkbox' defaultValue={ingredient} id={ingredient.id}/>  Is Required
-            
-      </CardBody>
-    </Card>
-  );
+    
+    return (
+        <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
+            <CardBody>
+                <CardTitle><strong>{ingredient.name}</strong></CardTitle>
+                <Input onChange={checkboxChangeHandler} 
+                    checked={hasIngredient()} 
+                    type="checkbox" 
+                    name='checkbox' 
+                    id={ingredient.id}/>
+            </CardBody>
+        </Card>
+    );
 }
