@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System.Security.Claims;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -25,10 +26,12 @@ namespace PantryRaid.Controllers
             return Ok(users);
         }
 
-        [HttpGet("{firebaseUserId}")]
-        public IActionResult GetUserProfile(string firebaseUserId)
+        [Authorize]
+        [HttpGet("GetCurrentUser")]
+        public IActionResult GetUserProfile()
         {
-            var user = _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
+            var currentUser = GetCurrentUserProfile();
+            var user = _userProfileRepository.GetByFirebaseUserId(currentUser.FirebaseUserId);
             if(user == null)
             {
                 return NotFound();
@@ -68,6 +71,12 @@ namespace PantryRaid.Controllers
             }
             _userProfileRepository.UpdateUser(user);
             return NoContent();
+        }
+
+        private UserProfile GetCurrentUserProfile()
+        {
+            var firebaseUserId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            return _userProfileRepository.GetByFirebaseUserId(firebaseUserId);
         }
     }
 }

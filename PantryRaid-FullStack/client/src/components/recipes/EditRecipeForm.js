@@ -1,53 +1,77 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { Button, Form, FormGroup, FormText, Input, Label } from "reactstrap";
-import { getAllIngredientsFromApi } from "../../modules/ingredientManager";
-import { addNewRecipeToApi } from "../../modules/recipeManager";
+import { getAllIngredientsByRecipeFromApi, getAllIngredientsFromApi } from "../../modules/ingredientManager";
+import { getRecipeByIdFromApi, updateRecipeInApi } from "../../modules/recipeManager";
 import { IngredientCheckBox } from "../ingredients/IngredientCheckBox";
 import "./Recipe.css"
 
-export const RecipeForm = () => {
-    const [allIngredients, setAllIngredients] = useState([])
+export const RecipeEditForm = () => {
+    const [currentRecipe, setCurrentRecipe] = useState({})
     const [ingredientsArray, setIngredientsArray] = useState([])
+    const [allIngredients, setAllIngredients] = useState([])
     const navigate = useNavigate()
+    const {recipeId} = useParams()
 
-    const [newRecipe, setNewRecipe] = useState({
-        title: "",
-        imageUrl: "",
-        website: "",
-        description: ""
-    })
+    useEffect(() => {
+        getRecipeByIdFromApi(recipeId).then(r => setCurrentRecipe(r))
+    }, [])
+    
+    useEffect(() => {
+        getAllIngredientsByRecipeFromApi(recipeId).then(ri => setIngredientsArray(ri))
+    }, [])
+    
+    useEffect(() => {
+        getAllIngredientsFromApi().then(data => setAllIngredients(data))
+    }, []);
 
     const SaveButtonClick = () => {
 
         const recipeToSendToApi = {
-            title: newRecipe.title,
-            imageUrl: newRecipe.imageUrl === "" ? null : newRecipe.imageUrl,
-            website: newRecipe.website === "" ? null : newRecipe.website,
-            description: newRecipe.description,
+            id: currentRecipe.id,
+            title: currentRecipe.title,
+            imageUrl: currentRecipe.imageUrl === "" ? null : currentRecipe.imageUrl,
+            website: currentRecipe.website === "" ? null : currentRecipe.website,
+            description: currentRecipe.description,
             ingredients: ingredientsArray
         }
 
-        return addNewRecipeToApi(recipeToSendToApi)
+        return updateRecipeInApi(recipeToSendToApi)
         .then(() => {
-            navigate("/Recipes")
+            navigate(-1)
         })
     }
-
-    useEffect(() => {
-        getAllIngredientsFromApi().then(data => setAllIngredients(data))
-    }, []);
 
     const ingredientSelections = () => {
         return (
             <div className="container">
                 <div className="row justify-content-center">
                     {allIngredients.map((ingredient) => (
-                        <IngredientCheckBox ingredient={ingredient} key={ingredient.id} ingredientsArray={ingredientsArray} setIngredientsArray={setIngredientsArray}/>
+                        <IngredientCheckBox 
+                            ingredient={ingredient} 
+                            key={ingredient.id} 
+                            ingredientsArray={ingredientsArray} 
+                            setIngredientsArray={setIngredientsArray}/>
                     ))}
                 </div>
             </div>
         )
+    }
+
+    const hasWebsite = () => {
+        if (currentRecipe.website === null) {
+            return "Enter website here..."
+        } else {
+            return `${currentRecipe.website}`
+        }
+    }
+
+    const hasImage = () => {
+        if (currentRecipe.imageUrl === null) {
+            return "Enter image URL here..."
+        } else {
+            return `${currentRecipe.imageUrl}`
+        }
     }
 
     return <div className="container">
@@ -56,11 +80,12 @@ export const RecipeForm = () => {
             <Label for="title">Recipe Title</Label>
             <Input
             name="title"
-            placeholder="New recipe title here..."
+            placeholder={currentRecipe.title}
+            defaultValue={currentRecipe.title}
             onChange={(evt) => {
-                const copy = {...newRecipe}
+                const copy = {...currentRecipe}
                 copy.title = evt.target.value
-                setNewRecipe(copy)
+                setCurrentRecipe(copy)
             }}
             />
         </FormGroup>
@@ -70,12 +95,13 @@ export const RecipeForm = () => {
             </Label>
             <Input
             name="directions"
-            placeholder="Enter detailed step-by-step directions for entire recipe here..."
+            placeholder={currentRecipe.description}
+            defaultValue={currentRecipe.description}
             type="textarea"
             onChange={(evt) => {
-                const copy = {...newRecipe}
+                const copy = {...currentRecipe}
                 copy.description = evt.target.value
-                setNewRecipe(copy)
+                setCurrentRecipe(copy)
             }}
             />
         </FormGroup>
@@ -92,12 +118,12 @@ export const RecipeForm = () => {
             <Input
             id="website"
             name="url"
-            placeholder="Enter website here..."
+            placeholder={hasWebsite()}
             type="url"
             onChange={(evt) => {
-                const copy = {...newRecipe}
+                const copy = {...currentRecipe}
                 copy.website = evt.target.value
-                setNewRecipe(copy)
+                setCurrentRecipe(copy)
             }}
             />
         </FormGroup>
@@ -109,10 +135,11 @@ export const RecipeForm = () => {
             id="image"
             name="url"
             type="url"
+            placeholder={hasImage()}
             onChange={(evt) => {
-                const copy = {...newRecipe}
+                const copy = {...currentRecipe}
                 copy.imageUrl = evt.target.value
-                setNewRecipe(copy)
+                setCurrentRecipe(copy)
             }}
             />
             <FormText>
@@ -123,7 +150,7 @@ export const RecipeForm = () => {
             <Button className="recipeButton" color="primary" onClick={() => SaveButtonClick()}>
                 Submit
             </Button>
-            <Button className="recipeButton" color="danger" onClick={() => navigate("/Recipes")}>
+            <Button className="recipeButton" color="danger" onClick={() => navigate(-1)}>
                 Cancel
             </Button>
         </div>

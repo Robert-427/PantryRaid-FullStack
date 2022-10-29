@@ -10,6 +10,8 @@ namespace PantryRaid.Repositories
         public List<Ingredient> GetIngredientsByRecipe(int recipeId);
         public Ingredient GetIngredientById(int id);
         public void AddNewIngredient(Ingredient ingredient);
+        public void AddUserIngredient(int userId, int ingredientId);
         public void UpdateIngredient(Ingredient ingredient);
+        public void UpdateUsersIngredients(int userId, List<Ingredient> ingredients);
     }
 }

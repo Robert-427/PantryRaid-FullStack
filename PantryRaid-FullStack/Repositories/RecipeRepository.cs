@@ -28,7 +28,7 @@ namespace PantryRaid.Repositories
 						LEFT JOIN FoodGroup g ON i.FoodGroupId = g.Id
 						ORDER BY g.Id";
 
-                    using(SqlDataReader reader = cmd.ExecuteReader())
+                    using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         var recipes = new List<Recipe>();
                         while (reader.Read())
@@ -36,7 +36,7 @@ namespace PantryRaid.Repositories
                             var recipeId = DBUtils.GetInt(reader, "Id");
 
                             var exisitingRecipe = recipes.FirstOrDefault(p => p.Id == recipeId);
-                            if(exisitingRecipe == null)
+                            if (exisitingRecipe == null)
                             {
                                 exisitingRecipe = new Recipe()
                                 {
@@ -49,17 +49,17 @@ namespace PantryRaid.Repositories
                                 };
                                 recipes.Add(exisitingRecipe);
                             }
-                            if(DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
+                            if (DBUtils.IsNotDbNull(reader, "RecipeIngredientId"))
                             {
                                 exisitingRecipe.Ingredients.Add(new Ingredient()
                                 {
                                     Id = DBUtils.GetInt(reader, "IngredientsId"),
-                                    Name = DBUtils.GetString(reader,"Ingredient"),
+                                    Name = DBUtils.GetString(reader, "Ingredient"),
                                     FoodGroupId = DBUtils.GetInt(reader, "FoodGroupId"),
                                     FoodGroup = new FoodGroup()
                                     {
-                                        Id = DBUtils.GetInt(reader,"GroupId"),
-                                        Name = DBUtils.GetString(reader,"FoodGroup")
+                                        Id = DBUtils.GetInt(reader, "GroupId"),
+                                        Name = DBUtils.GetString(reader, "FoodGroup")
                                     }
                                 });
                             }
@@ -75,7 +75,7 @@ namespace PantryRaid.Repositories
             using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         SELECT	r.Id, r.Title, r.Description, r.ImageUrl, r.Website, 
@@ -118,13 +118,13 @@ namespace PantryRaid.Repositories
                 }
             }
         }
-      
+
         public Recipe GetRecipeById(int recipeId)
         {
             using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         SELECT	r.Id, r.Title, r.Description, r.ImageUrl, r.Website, 
@@ -143,7 +143,7 @@ namespace PantryRaid.Repositories
                     using (SqlDataReader reader = cmd.ExecuteReader())
                     {
                         Recipe recipe = null;
-                        while(reader.Read())
+                        while (reader.Read())
                         {
                             if (recipe == null)
                             {
@@ -171,10 +171,10 @@ namespace PantryRaid.Repositories
         }
         public void AddNewRecipe(Recipe recipe)
         {
-            using(var conn=Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         INSERT INTO Recipe (Title, Description, Website, ImageUrl)
@@ -194,7 +194,7 @@ namespace PantryRaid.Repositories
         }
         private void AddNewRecipeIngredient(int recipeId, List<Ingredient> ingredients)
         {
-            foreach(var ingredient in ingredients)
+            foreach (var ingredient in ingredients)
             {
                 using (var conn = Connection)
                 {
@@ -216,10 +216,10 @@ namespace PantryRaid.Repositories
         }
         public void UpdateRecipe(Recipe recipe)
         {
-            using(var conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"
                         UPDATE Recipe
@@ -234,16 +234,45 @@ namespace PantryRaid.Repositories
                     DBUtils.AddParameter(cmd, "@Website", recipe.Website);
                     DBUtils.AddParameter(cmd, "@ImageUrl", recipe.ImageUrl);
 
+                    DBUtils.AddParameter(cmd, "@id", recipe.Id);
+
+                    cmd.ExecuteNonQuery();
+
+                    EditRecipeIngredints(recipe.Id, recipe.Ingredients, conn);
+                }
+            }
+        }
+        private void EditRecipeIngredints(int recipeId, List<Ingredient> ingredients, SqlConnection conn)
+        {
+
+            using (var cmd = conn.CreateCommand())
+            {
+                cmd.CommandText = @"DELETE FROM RecipeIngredient WHERE RecipeId = @recipeId";
+                DBUtils.AddParameter(cmd, "@recipeId", recipeId);
+                cmd.ExecuteNonQuery();
+            }
+            foreach (var ingredient in ingredients)
+            {
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                            INSERT INTO RecipeIngredient (RecipeId, IngredientId, IsRequired)
+                            VALUES (@recipeId, @ingredientId, @isRequired)";
+
+                    DBUtils.AddParameter(cmd, "@recipeId", recipeId);
+                    DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
+                    DBUtils.AddParameter(cmd, "@isRequired", 1);
+
                     cmd.ExecuteNonQuery();
                 }
             }
         }
         public void DeleteRecipe(int id)
         {
-            using(var conn = Connection)
+            using (var conn = Connection)
             {
                 conn.Open();
-                using(var cmd = conn.CreateCommand())
+                using (var cmd = conn.CreateCommand())
                 {
                     cmd.CommandText = @"DELETE FROM Recipe WHERE Id = @id";
                     DBUtils.AddParameter(cmd, "@id", id);

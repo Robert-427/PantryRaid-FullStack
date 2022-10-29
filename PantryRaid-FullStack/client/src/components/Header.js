@@ -12,7 +12,7 @@ import {
 import { logout } from "../modules/authManager";
 import "./Header.css";
 
-export default function Header({ isLoggedIn }) {
+export default function Header({ isLoggedIn, isAdmin }) {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
 
@@ -30,16 +30,16 @@ export default function Header({ isLoggedIn }) {
             {isLoggedIn && (
               <>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to="/">HOME</NavLink>
+                  <NavLink tag={RRNavLink} to="/" onClick={() => {toggle()}}>HOME</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={RRNavLink} to="/myIngredients">MY PANTRY</NavLink>
+                    <NavLink tag={RRNavLink} to="/myIngredients" onClick={() => {toggle()}}>MY PANTRY</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={RRNavLink} to="/Ingredients">ALL INGREDIENTS</NavLink>
+                    <NavLink tag={RRNavLink} to="/Ingredients" onClick={() => {toggle()}}>ALL INGREDIENTS</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink tag={RRNavLink} to="/Recipes">ALL RECIPES</NavLink>
+                    <NavLink tag={RRNavLink} to="/Recipes" onClick={() => {toggle()}}>ALL RECIPES</NavLink>
                 </NavItem>
                 <NavItem>
                   <NavLink onClick={logout}>LOGOUT</NavLink>

@@ -7,7 +7,7 @@ import { onLoginStatusChange } from "./modules/authManager";
 import { getUserByFirebaseFromApi } from './modules/userProfileManager';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState();
+  const [isLoggedIn, setIsLoggedIn] = useState(null);
   const [isAdmin, setIsAdmin] = useState();
 
   useEffect(() => {
@@ -17,7 +17,7 @@ function App() {
   useEffect(() => {
     if(isLoggedIn){
       getUserByFirebaseFromApi().then((user) => {
-        if (user.isAdmin === true) {
+        if (user.isAdmin) {
           setIsAdmin(true);
         } else {
           setIsAdmin(false);

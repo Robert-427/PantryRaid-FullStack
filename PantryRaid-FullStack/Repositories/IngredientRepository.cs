@@ -144,6 +144,25 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public void AddUserIngredient(int userId, int ingredientId)
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using (var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        INSERT INTO UserIngredient (UserProfileId, IngredientId, Quantity)
+                        VALUES (@userProfileId, @ingredientId, @quantity)";
+
+                    DBUtils.AddParameter(cmd, "@userProfileId", userId);
+                    DBUtils.AddParameter(cmd, "@ingredientId", ingredientId);
+                    DBUtils.AddParameter(cmd, "@quantity", 1);
+
+                    cmd.ExecuteNonQuery();
+                }
+            }
+        }
         public void UpdateIngredient(Ingredient ingredient)
         {
             using(var conn = Connection)
@@ -161,6 +180,34 @@ namespace PantryRaid.Repositories
                     DBUtils.AddParameter(cmd, "FoodGroupId", ingredient.FoodGroupId);
 
                     cmd.ExecuteNonQuery();
+                }
+            }
+        }
+        public void UpdateUsersIngredients(int userId, List<Ingredient> ingredients)
+        {
+            using(var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"DELETE FROM UserIngredient WHERE UserProfileId = @UserProfileId";
+                    DBUtils.AddParameter(cmd, "@UserProfileId", userId);
+                    cmd.ExecuteNonQuery();
+                }
+                foreach (var ingredient in ingredients)
+                {
+                    using (var cmd = conn.CreateCommand())
+                    {
+                        cmd.CommandText = @"
+                            INSERT INTO UserIngredient (UserProfileId, IngredientId, Quantity)
+                            VALUES (@UserProfileId, @ingredientId, @isRequired)";
+
+                        DBUtils.AddParameter(cmd, "@UserProfileId", userId);
+                        DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
+                        DBUtils.AddParameter(cmd, "@isRequired", 10);
+
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
         }
