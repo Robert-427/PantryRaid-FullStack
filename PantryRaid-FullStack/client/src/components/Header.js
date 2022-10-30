@@ -30,10 +30,7 @@ export default function Header({ isLoggedIn, isAdmin }) {
             {isLoggedIn && (
               <>
                 <NavItem>
-                  <NavLink tag={RRNavLink} to="/" onClick={() => {toggle()}}>HOME</NavLink>
-                </NavItem>
-                <NavItem>
-                    <NavLink tag={RRNavLink} to="/myIngredients" onClick={() => {toggle()}}>MY PANTRY</NavLink>
+                    <NavLink tag={RRNavLink} to="/" onClick={() => {toggle()}}>MY PANTRY</NavLink>
                 </NavItem>
                 <NavItem>
                     <NavLink tag={RRNavLink} to="/Ingredients" onClick={() => {toggle()}}>ALL INGREDIENTS</NavLink>
@@ -42,7 +39,7 @@ export default function Header({ isLoggedIn, isAdmin }) {
                     <NavLink tag={RRNavLink} to="/Recipes" onClick={() => {toggle()}}>ALL RECIPES</NavLink>
                 </NavItem>
                 <NavItem>
-                  <NavLink onClick={logout}>LOGOUT</NavLink>
+                  <NavLink tag={RRNavLink} to="/login" onClick={logout} >LOGOUT</NavLink>
                 </NavItem>
               </>
             )}

@@ -7,6 +7,11 @@ export const getAllIngredientsFromApi = () => {
     .then((res) => res.json())
 };
 
+export const getAllFoodGroupsFromApi = () => {
+    return fetch(baseUrl+`/FoodGroups`)
+    .then((res) => res.json())
+}
+
 export const getIngredientsByUserFromApi = () => {
     return getToken().then((token) => {
         return fetch(baseUrl+`/GetByUser`, {

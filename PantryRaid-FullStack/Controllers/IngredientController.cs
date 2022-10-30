@@ -32,6 +32,13 @@ namespace PantryRaid.Controllers
             return Ok(ingredients);
         }
 
+        [HttpGet("FoodGroups")]
+        public IActionResult GetAllFoodGroups()
+        {
+            var foodGroups = _ingredientRepository.GetAllFoodGroupsForIngredients();
+            return Ok(foodGroups);
+        }
+
         [HttpGet("GetByUser")]
         public IActionResult GetByUser()
         {

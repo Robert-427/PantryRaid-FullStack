@@ -97,6 +97,27 @@ namespace PantryRaid.Repositories
                 }
             }
         }
+        public List<FoodGroup> GetAllFoodGroupsForIngredients()
+        {
+            using (var conn = Connection)
+            {
+                conn.Open();
+                using(var cmd = conn.CreateCommand())
+                {
+                    cmd.CommandText = @"
+                        SELECT * FROM FoodGroup";
+
+                    var reader = cmd.ExecuteReader();
+                    var foodGroups = new List<FoodGroup>();
+                    while(reader.Read())
+                    {
+                        foodGroups.Add(NewFoodGroupFromReader(reader));
+                    };
+                    reader.Close();
+                    return foodGroups;
+                }
+            }
+        }
         public Ingredient GetIngredientById(int id)
         {
             using (var conn = Connection)
@@ -223,6 +244,14 @@ namespace PantryRaid.Repositories
                     Id = DBUtils.GetInt(reader, "FoodGroupId"),
                     Name = DBUtils.GetString(reader, "FoodGroupName")
                 }
+            };
+        }
+        private FoodGroup NewFoodGroupFromReader(SqlDataReader reader)
+        {
+            return new FoodGroup()
+            {
+                Id = DBUtils.GetInt(reader, "Id"),
+                Name = DBUtils.GetString(reader, "Name")
             };
         }
     }
