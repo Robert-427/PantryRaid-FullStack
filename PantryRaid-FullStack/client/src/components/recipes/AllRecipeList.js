@@ -4,13 +4,15 @@ import { Button } from "reactstrap";
 import { getAllRecipesFromApi } from "../../modules/recipeManager"
 import { Recipe } from "./Recipe";
 
-export const AllRecipes = () => {
+export const AllRecipes = ({isAdmin}) => {
     const [recipes, setRecipes] = useState([])
     const navigate = useNavigate()
 
     useEffect(() => {
         getAllRecipesFromApi().then(data => setRecipes(data));
     }, []);
+
+
 
     return (
         <div className="container">

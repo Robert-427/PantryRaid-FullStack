@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "reactstrap"
+import App from "../../App"
 import { getAllIngredientsFromApi, getIngredientsByUserFromApi, updateUsersIngredientsInApi } from "../../modules/ingredientManager"
 import { IngredientCheckBox } from "./IngredientCheckBox"
 
@@ -26,7 +27,10 @@ export const EditMyIngredients = () => {
 
     return (
         <div className="container">
-            <Button color="success" onClick={SaveButtonClick}>Save Updated Ingredients</Button>
+            <div>
+                <Button color="success" onClick={SaveButtonClick}>Save Updated Ingredients</Button>
+                <Button color="danger" onClick={() => navigate(-1)}>Cancel</Button>
+            </div>
             <div className="row justify-content-center">
                 {allIngredients.map((ingredient) => (
                     <IngredientCheckBox 

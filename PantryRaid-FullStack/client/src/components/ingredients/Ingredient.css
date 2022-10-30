@@ -13,9 +13,16 @@
     display: flex;
     flex-wrap: wrap;
     width: 60%;
+    border: 2px black;
 }
 
 .cardText{
     display: flex;
     justify-content: space-between;
 }
+
+.title {
+    display: flex;
+    justify-content: space-evenly;
+}
+

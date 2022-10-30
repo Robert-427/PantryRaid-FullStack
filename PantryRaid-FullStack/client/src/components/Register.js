@@ -105,7 +105,7 @@ export default function Register() {
             />
             </FormGroup>
             <FormGroup>
-            <Label for="state">State:</Label>
+                <Label for="state">State:</Label>
                 <UncontrolledDropdown className="me-2" direction="down">
                     <DropdownToggle caret color="light" >
                         Pick your State
