@@ -28,13 +28,21 @@ export const RecipeDetails = ({isAdmin}) => {
         }
     }
 
+    const adminControls = () => {
+        if(isAdmin == true) {
+            return <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}><h6>Edit</h6></Button>
+        } else {
+            return ""
+        }
+    }
+
     return(
         <div className="recipeContainer">
             <div className="recipeCard">
                 <div className="row justify-content-center">
-                    <Card style={{width: '30rem'}}>
+                    <Card color="secondary" style={{width: '30rem'}}>
                         <CardBody>
-                            <CardTitle tag="h5">{recipe.Title}</CardTitle>
+                            <CardTitle><h5>{recipe.Title}</h5></CardTitle>
                         <div className="recipePhoto">
                             {PhotoSwitcher()}
                         </div>
@@ -44,7 +52,7 @@ export const RecipeDetails = ({isAdmin}) => {
                             </CardLink>
                         </CardBody>
                         <Button color="primary" onClick={() => navigate(-1)}><h6>Return</h6></Button>
-                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}><h6>Edit</h6></Button>
+                        {adminControls()}
                     </Card>
                 </div>
             </div>

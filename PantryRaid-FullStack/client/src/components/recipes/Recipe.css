@@ -16,6 +16,14 @@
     width: 60%;
 }
 
+h5 {
+    color: black;
+    text-shadow: -1px 1px 2px aliceblue,
+        1px 1px 2px aliceblue,
+        1px -1px 2px aliceblue,
+        -1px -1px 2px aliceblue;
+}
+
 h6 {
     color: aliceblue;
     text-shadow: -1px 1px 4px #000,
