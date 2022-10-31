@@ -52,14 +52,25 @@ export const addNewIngredientToApi = (ingredient) => {
 };
 
 export const updateIngredintInApi = (ingredient) => {
-    return fetch(baseUrl+`/${ingredient.id}`, {
-        method: "PUT",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify(ingredient),
-    });
-};
+    return getToken().then((token) => {
+        return fetch(baseUrl+`/${ingredient.id}`, {
+            method: "PUT",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(ingredient),
+        }).then((res) => {
+            if(res.ok) {
+                return res.json()
+            } else {
+                throw new Error(
+                    "An unknown error occured while updating user's ingredients"
+                )
+            }
+        })
+    })
+}
 
 export const updateUsersIngredientsInApi = (ingredients) => {
     return getToken().then((token) => {

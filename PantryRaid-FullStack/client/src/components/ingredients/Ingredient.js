@@ -1,7 +1,9 @@
-import { Card, CardBody, CardText, CardTitle } from 'reactstrap';
+import { useNavigate } from 'react-router-dom';
+import { Button, Card, CardBody, CardText, CardTitle } from 'reactstrap';
 import "./Ingredient.css"
 
-export const Ingredient = ({ingredient}) => {
+export const Ingredient = ({ingredient, isAdmin}) => {
+    const navigate = useNavigate()
     const cardColor = () => {
         if(ingredient.foodGroup.name == "Dairy") {
             return "warning"
@@ -22,6 +24,7 @@ export const Ingredient = ({ingredient}) => {
             <CardTitle><strong>{ingredient.name}</strong></CardTitle>
             <CardText className='cardText'>
                 {ingredient.foodGroup.name}
+                {isAdmin ? <Button color='warning' onClick={n => navigate(`/Ingredients/edit/${ingredient.id}`)}>Edit</Button> : ""}
             </CardText>
       </CardBody>
     </Card>

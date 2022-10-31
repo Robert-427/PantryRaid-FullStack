@@ -4,11 +4,14 @@ import { Button, Col, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Inp
 import { addNewIngredientToApi, getAllFoodGroupsFromApi, getAllIngredientsFromApi } from "../../modules/ingredientManager";
 import { Ingredient } from "./Ingredient";
 import "./Ingredient.css"
+import { Error } from "./Modal";
 
 export const AllIngredients = ({isAdmin}) => {
     const [ingredients, setIngredients] = useState([]);
     const [foodGroups, setFoodGroups] = useState([]);
+    const [modal, setModal] = useState(false);
     const navigate = useNavigate();
+    const toggle = () => setModal(!modal);
 
     const [newIngredient, setNewIngredient] = useState({
         name: "",
@@ -29,6 +32,14 @@ export const AllIngredients = ({isAdmin}) => {
             return "Select..."
         } else {
             return `${newIngredient.foodGroupName}`
+        }
+    }
+
+    const isValid = () => {
+        if(newIngredient.id === 0 || newIngredient.name === ""){
+            {toggle()}
+        } else {
+            {SaveButtonClick()}
         }
     }
 
@@ -89,9 +100,10 @@ export const AllIngredients = ({isAdmin}) => {
                         </FormGroup>
                     </Col>
                     <Col md={1}>
-                        <Button color="success" onClick={() => SaveButtonClick()}>Save Ingredient</Button>
+                        <Button color="success" onClick={isValid}>Save Ingredient</Button>
                     </Col>
                 </Row>
+                <Error className={"errorModal"} modal={modal} toggle={toggle} />
             </div>
         }
     };
@@ -101,7 +113,7 @@ export const AllIngredients = ({isAdmin}) => {
             {adminControls()}
             <div className="row justify-content-center">
                 {ingredients.map((ingredient) => (
-                    <Ingredient ingredient={ingredient} key={ingredient.id} />
+                    <Ingredient ingredient={ingredient} key={ingredient.id} isAdmin={isAdmin}/>
                 ))}
             </div>
         </div>

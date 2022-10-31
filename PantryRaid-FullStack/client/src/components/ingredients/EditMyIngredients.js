@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom"
 import { Button } from "reactstrap"
-import App from "../../App"
 import { getAllIngredientsFromApi, getIngredientsByUserFromApi, updateUsersIngredientsInApi } from "../../modules/ingredientManager"
 import { IngredientCheckBox } from "./IngredientCheckBox"
 

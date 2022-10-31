@@ -197,6 +197,7 @@ namespace PantryRaid.Repositories
                             FoodGroupId = @FoodGroupId
                         WHERE Id = @Id";
 
+                    DBUtils.AddParameter(cmd, "@Id", ingredient.Id);
                     DBUtils.AddParameter(cmd, "@Name", ingredient.Name);
                     DBUtils.AddParameter(cmd, "FoodGroupId", ingredient.FoodGroupId);
 
