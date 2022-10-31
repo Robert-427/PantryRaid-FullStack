@@ -19,13 +19,24 @@ export const AllIngredients = ({isAdmin}) => {
         foodGroupName: ""
     });
 
-    useEffect(() => {
+    const getIngredients = () => {
         getAllIngredientsFromApi().then(data => setIngredients(data))
+    }
+
+    useEffect(() => {
+        getIngredients()
     }, []);
     
     useEffect(() => {
         getAllFoodGroupsFromApi().then(foodGroups => setFoodGroups(foodGroups))
     }, []);
+
+    const handleReset = () => {
+        Array.from(document.querySelectorAll("input")).forEach(
+            input => (input.value = "")
+        )
+        newIngredient.foodGroupId = 0
+    };
 
     const groupSelctor = () => {
         if (newIngredient.foodGroupId == 0) {
@@ -49,9 +60,8 @@ export const AllIngredients = ({isAdmin}) => {
             foodGroupId: newIngredient.foodGroupId
         }
         return addNewIngredientToApi(ingredientToSendToApi)
-        .then(() => {
-            navigate(`/Ingredients`)
-        })
+        .then(getIngredients())
+        .then(handleReset())
     }
 
     const adminControls = () => {
