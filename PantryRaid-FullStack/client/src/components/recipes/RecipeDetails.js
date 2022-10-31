@@ -6,7 +6,7 @@ import { getAllIngredientsByRecipeFromApi } from "../../modules/ingredientManage
 import { getRecipeByIdFromApi } from "../../modules/recipeManager";
 import { Ingredient } from "../ingredients/Ingredient";
 
-export const RecipeDetails = () => {
+export const RecipeDetails = ({isAdmin}) => {
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState({});
     const [recipeIngredients, setRecipeIngredients] = useState([])
@@ -27,10 +27,6 @@ export const RecipeDetails = () => {
             return <img src={recipe.imageUrl} width={400} />
         }
     }
-
-    // const canDelete = () => {
-        //<Button color="danger" onClick={() => }>Delete</Button>
-    // }
 
     return(
         <div className="recipeContainer">
