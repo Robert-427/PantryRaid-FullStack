@@ -33,7 +33,7 @@ export const EditIngredient = () => {
             <Row>
                 <Col md={2}>
                     <FormGroup>
-                        <Label for="foodGroupSelector">Food Group</Label>
+                        <Label for="foodGroupSelector"><h6>Food Group</h6></Label>
                         <UncontrolledDropdown className="me-2" direction="down">
                             <DropdownToggle caret color="light" >
                                 {ingredient.foodGroup?.name}
@@ -60,7 +60,7 @@ export const EditIngredient = () => {
                 </Col>
                 <Col md={6}>
                     <FormGroup>
-                        <Label for="ingredientName">Ingredient</Label>
+                        <Label for="ingredientName"><h6>Ingredient</h6></Label>
                         <Input
                             id={ingredientId}
                             name="ingredientName"
@@ -74,8 +74,8 @@ export const EditIngredient = () => {
                     </FormGroup>
                 </Col>
             </Row>
-            <Button color="success" onClick={SaveButtonClick}>Save Changes</Button>
-            <Button color="danger" onClick={()=>navigate(-1)}>Cancel</Button>
+            <Button color="success" onClick={SaveButtonClick}><h6>Save Changes</h6></Button>
+            <Button color="danger" onClick={()=>navigate(-1)}><h6>Cancel</h6></Button>
         </div>
     )
 }

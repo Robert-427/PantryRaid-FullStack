@@ -60,8 +60,8 @@ export const AllIngredients = ({isAdmin}) => {
             foodGroupId: newIngredient.foodGroupId
         }
         return addNewIngredientToApi(ingredientToSendToApi)
-        .then(getIngredients())
-        .then(handleReset())
+        .then(() => getIngredients())
+        .then(() => handleReset())
     }
 
     const adminControls = () => {
@@ -70,7 +70,7 @@ export const AllIngredients = ({isAdmin}) => {
                 <Row>
                     <Col md={2}>
                         <FormGroup>
-                            <Label for="FoodGroup">Select Food Group</Label>
+                            <Label for="FoodGroup"><h6>Select Food Group</h6></Label>
                             <UncontrolledDropdown className="me-2" direction="down">
                                 <DropdownToggle caret color="light" >
                                     {groupSelctor()}
@@ -96,7 +96,7 @@ export const AllIngredients = ({isAdmin}) => {
                     </Col>
                     <Col md={6}>
                         <FormGroup>
-                            <Label for="Name">New Ingredient</Label>
+                            <Label for="Name"><h6>New Ingredient</h6></Label>
                             <Input 
                                 id="newIngredient" 
                                 name="newIngredient"
@@ -110,7 +110,7 @@ export const AllIngredients = ({isAdmin}) => {
                         </FormGroup>
                     </Col>
                     <Col md={1}>
-                        <Button color="success" onClick={isValid}>Save Ingredient</Button>
+                        <Button color="success" onClick={isValid}><h6>Save Ingredient</h6></Button>
                     </Col>
                 </Row>
                 <Error className={"errorModal"} modal={modal} toggle={toggle} />

@@ -23,7 +23,7 @@ export const MyPantry = () => {
     const noIngredientsOnHand = () => {
         if(ingredients.length === 0 || ingredients == null) {
             return <div>
-                <h4>Looks like your pantry is empty. Try adding some ingredients you have at home.</h4>
+                <h3>Looks like your pantry is empty. Try adding some ingredients you have at home.</h3>
             </div>
         }
     }
@@ -31,18 +31,18 @@ export const MyPantry = () => {
     const noAvailableRecipes = () => {
         if(usableRecipes.length === 0 || usableRecipes == null) {
             return <div>
-                <h4>You have no recipes you can make until you get more ingredients.</h4>
+                <h3>You have no recipes you can make until you get more ingredients.</h3>
             </div>
         }
     }
 
     return (
-        <div>
+        <div className="pantry">
             <div className="title">
-            <h1>My Ingredients</h1>
-            <h1>Recipes I Can Make</h1>
+            <h1 className="header">My Ingredients</h1>
+            <h1 className="header">Recipes I Can Make</h1>
             </div>
-            <Button color="primary" onClick={() => navigate(`/myIngredients/edit`)}>Change My Ingredients</Button>
+            <Button color="primary" onClick={() => navigate(`/myIngredients/edit`)}><h6>Change My Ingredients</h6></Button>
             <div className="myPantryContainer">
                 <div className="ingredients">
                     {noIngredientsOnHand()}

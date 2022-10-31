@@ -14,17 +14,17 @@ export const Ingredient = ({ingredient, isAdmin}) => {
         } else if (ingredient.foodGroup.name == "Protein") {
             return "danger"
         } else {
-            return "primary"
+            return "info"
         }
     }
 
   return (
-    <Card className='ingredientCard' color ={cardColor()} outline style={{ width: '12rem' }}>
+    <Card className='ingredientCard' color ={cardColor()} style={{ width: '12rem' }}>
         <CardBody>
-            <CardTitle><strong>{ingredient.name}</strong></CardTitle>
+            <CardTitle><h6>{ingredient.name}</h6></CardTitle>
             <CardText className='cardText'>
                 {ingredient.foodGroup.name}
-                {isAdmin ? <Button color='warning' onClick={n => navigate(`/Ingredients/edit/${ingredient.id}`)}>Edit</Button> : ""}
+                {isAdmin ? <Button color='dark' onClick={n => navigate(`/Ingredients/edit/${ingredient.id}`)}><h6>Edit</h6></Button> : ""}
             </CardText>
       </CardBody>
     </Card>

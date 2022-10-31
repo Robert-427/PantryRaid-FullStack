@@ -16,7 +16,7 @@ export const AllRecipes = ({isAdmin}) => {
 
     return (
         <div className="container">
-            <Button className="AddRecipe" color="success" onClick={() => navigate("/Recipes/new")}>Add New Recipe</Button>
+            <Button className="AddRecipe" color="success" onClick={() => navigate("/Recipes/new")}><h6>Add New Recipe</h6></Button>
             <div className="row justify-content-center">
                 {recipes.map((recipe) => (
                     <Recipe recipe={recipe} key={recipe.id} />

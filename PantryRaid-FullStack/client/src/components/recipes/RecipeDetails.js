@@ -43,8 +43,8 @@ export const RecipeDetails = ({isAdmin}) => {
                                 {recipe.website}
                             </CardLink>
                         </CardBody>
-                        <Button color="primary" onClick={() => navigate(-1)}>Return</Button>
-                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}>Edit</Button>
+                        <Button color="primary" onClick={() => navigate(-1)}><h6>Return</h6></Button>
+                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}><h6>Edit</h6></Button>
                     </Card>
                 </div>
             </div>
