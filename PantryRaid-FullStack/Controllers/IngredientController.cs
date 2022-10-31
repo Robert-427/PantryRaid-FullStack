@@ -99,7 +99,7 @@ namespace PantryRaid.Controllers
                 return BadRequest();
             }
             _ingredientRepository.UpdateIngredient(ingredient);
-            return NoContent();
+            return Ok(ingredient);
         }
 
         private UserProfile GetCurrentUserProfile()
