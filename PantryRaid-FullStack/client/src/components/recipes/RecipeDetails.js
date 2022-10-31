@@ -6,7 +6,7 @@ import { getAllIngredientsByRecipeFromApi } from "../../modules/ingredientManage
 import { getRecipeByIdFromApi } from "../../modules/recipeManager";
 import { Ingredient } from "../ingredients/Ingredient";
 
-export const RecipeDetails = () => {
+export const RecipeDetails = ({isAdmin}) => {
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState({});
     const [recipeIngredients, setRecipeIngredients] = useState([])
@@ -28,10 +28,6 @@ export const RecipeDetails = () => {
         }
     }
 
-    // const canDelete = () => {
-        //<Button color="danger" onClick={() => }>Delete</Button>
-    // }
-
     return(
         <div className="recipeContainer">
             <div className="recipeCard">
@@ -47,8 +43,8 @@ export const RecipeDetails = () => {
                                 {recipe.website}
                             </CardLink>
                         </CardBody>
-                        <Button color="primary" onClick={() => navigate(-1)}>Return</Button>
-                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}>Edit</Button>
+                        <Button color="primary" onClick={() => navigate(-1)}><h6>Return</h6></Button>
+                        <Button color="success" onClick={() => navigate(`/Recipes/Edit/${recipeId}`)}><h6>Edit</h6></Button>
                     </Card>
                 </div>
             </div>

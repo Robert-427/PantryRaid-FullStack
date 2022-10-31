@@ -13,7 +13,7 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
         } else if (ingredient.foodGroup.name == "Protein") {
             return "danger"
         } else {
-            return "primary"
+            return "info"
         }
     }
 
@@ -41,9 +41,9 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
     }
     
     return (
-        <Card className='ingredientCard' color={cardColor()} outline style={{ width: '12rem' }}>
+        <Card className='ingredientCard' color={cardColor()} style={{ width: '12rem' }}>
             <CardBody>
-                <CardTitle><strong>{ingredient.name}</strong></CardTitle>
+                <CardTitle><h6>{ingredient.name}</h6></CardTitle>
                 <Input onChange={checkboxChangeHandler} 
                     checked={hasIngredient()} 
                     type="checkbox" 

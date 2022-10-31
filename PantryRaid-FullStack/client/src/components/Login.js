@@ -17,34 +17,36 @@ export default function Login() {
   };
 
   return (
-    <div className="container">
-        <Form onSubmit={loginSubmit}>
-        <fieldset>
-            <FormGroup>
-            <Label for="email">Email</Label>
-            <Input
-                id="email"
-                type="text"
-                autoFocus
-                onChange={(e) => setEmail(e.target.value)}
-            />
-            </FormGroup>
-            <FormGroup>
-            <Label for="password">Password</Label>
-            <Input
-                id="password"
-                type="password"
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            </FormGroup>
-            <FormGroup>
-            <Button>Login</Button>
-            </FormGroup>
-            <em>
-            Not registered? <Link to="/register">Register</Link>
-            </em>
-        </fieldset>
-        </Form>
+    <div className="login">
+        <div className="container">
+            <Form onSubmit={loginSubmit}>
+            <fieldset>
+                <FormGroup>
+                <Label for="email"><h6>Email</h6></Label>
+                <Input
+                    id="email"
+                    type="text"
+                    autoFocus
+                    onChange={(e) => setEmail(e.target.value)}
+                />
+                </FormGroup>
+                <FormGroup>
+                <Label for="password"><h6>Password</h6></Label>
+                <Input
+                    id="password"
+                    type="password"
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                </FormGroup>
+                <FormGroup>
+                <Button><h6>Login</h6></Button>
+                </FormGroup>
+                <em>
+                <h6>Not registered? <Link to="/register">Register</Link></h6>
+                </em>
+            </fieldset>
+            </Form>
+        </div>
     </div>
   );
 }

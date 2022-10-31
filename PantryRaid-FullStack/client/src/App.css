@@ -37,3 +37,16 @@
   }
 }
 
+body {
+  background-image: url("../public/cuttingboard.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  background-size: cover;
+}
+
+.login {
+  width: 325px;
+  margin-left: 35%;
+  margin-top: 5%;
+}

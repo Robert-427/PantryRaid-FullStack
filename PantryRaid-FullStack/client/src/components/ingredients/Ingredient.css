@@ -1,7 +1,6 @@
 .ingredientCard {
     margin: 5px;
     justify-content: space-between;
-    background-color: burlywood;
 }
 
 .myPantryContainer {
@@ -26,3 +25,30 @@
     justify-content: space-evenly;
 }
 
+h1 {
+    color: wheat;
+    text-shadow: -1px 1px 4px #000,
+        1px 1px 4px #000,
+        1px -1px 0 #000,
+        -1px -1px 0 #000;
+}
+
+h3 {
+    color: wheat;
+    text-shadow: -1px 1px 4px #000,
+        1px 1px 4px #000,
+        1px -1px 0 #000,
+        -1px -1px 0 #000;
+}
+
+h6 {
+    color: aliceblue;
+    text-shadow: -1px 1px 4px #000,
+        1px 1px 4px #000,
+        1px -1px 0 #000,
+        -1px -1px 0 #000;
+}
+
+.pantry {
+    margin: 10px;
+}

@@ -12,7 +12,6 @@ import { RecipeEditForm } from "./recipes/EditRecipeForm";
 import { EditMyIngredients } from "./ingredients/EditMyIngredients";
 import { EditIngredient } from "./ingredients/EditIngredient";
 
-
 export default function ApplicationViews({ isLoggedIn, isAdmin }) {
   return (
     <main>
@@ -29,7 +28,7 @@ export default function ApplicationViews({ isLoggedIn, isAdmin }) {
           <Route path="Ingredients" element={<AllIngredients isAdmin={isAdmin} />} />
           <Route path="Ingredients/edit/:ingredientId" element={<EditIngredient />} />
           <Route path="Recipes" element={<AllRecipes />} />
-          <Route path="Recipes/details/:recipeId" element={<RecipeDetails />} />
+          <Route path="Recipes/details/:recipeId" element={<RecipeDetails isAdmin={isAdmin} />} />
           <Route path="Recipes/new" element={<RecipeForm />} />
           <Route path="Recipes/Edit/:recipeId" element={<RecipeEditForm />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />

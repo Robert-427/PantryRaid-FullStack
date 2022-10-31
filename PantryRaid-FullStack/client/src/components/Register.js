@@ -44,14 +44,6 @@ export default function Register() {
     }
   };
 
-//   const displayState = () => {
-//     if (userProfile.stateId == "" || userProfile == null) {
-//         return "Please select your state"
-//     } else {
-//         return {userProfile.state}
-//     }
-//   }
-
   return (
     <div className="container">
         <Form onSubmit={registerClick}>

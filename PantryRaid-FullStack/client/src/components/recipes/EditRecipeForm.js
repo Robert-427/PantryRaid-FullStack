@@ -77,7 +77,7 @@ export const RecipeEditForm = () => {
     return <div className="container">
     <Form>
         <FormGroup>
-            <Label for="title">Recipe Title</Label>
+            <Label for="title"><h6>Recipe Title</h6></Label>
             <Input
             name="title"
             placeholder={currentRecipe.title}
@@ -91,7 +91,7 @@ export const RecipeEditForm = () => {
         </FormGroup>
         <FormGroup>
             <Label for="directions">
-            Cooking Directions
+            <h6>Cooking Directions</h6>
             </Label>
             <Input
             name="directions"
@@ -107,13 +107,13 @@ export const RecipeEditForm = () => {
         </FormGroup>
         <FormGroup>
             <Label for="exampleSelect">
-            Select Ingredients
+            <h6>Select Ingredients</h6>
             </Label>
             {ingredientSelections()}
         </FormGroup>
         <FormGroup>
             <Label for="website">
-            Website for recipe
+            <h6>Website for recipe</h6>
             </Label>
             <Input
             id="website"
@@ -129,7 +129,7 @@ export const RecipeEditForm = () => {
         </FormGroup>
         <FormGroup>
             <Label for="image">
-            Recipe Image Url
+            <h6>Recipe Image Url</h6>
             </Label>
             <Input
             id="image"
@@ -142,16 +142,13 @@ export const RecipeEditForm = () => {
                 setCurrentRecipe(copy)
             }}
             />
-            <FormText>
-            If you have a picture to add to your recipe, please enter that address that here.
-            </FormText>
         </FormGroup>
         <div className="buttonRow">
             <Button className="recipeButton" color="primary" onClick={() => SaveButtonClick()}>
-                Submit
+                <h6>Submit</h6>
             </Button>
             <Button className="recipeButton" color="danger" onClick={() => navigate(-1)}>
-                Cancel
+                <h6>Cancel</h6>
             </Button>
         </div>
     </Form>
