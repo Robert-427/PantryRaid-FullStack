@@ -6,11 +6,13 @@ import { getAllIngredientsByRecipeFromApi } from "../../modules/ingredientManage
 import { getRecipeByIdFromApi } from "../../modules/recipeManager";
 import { Ingredient } from "../ingredients/Ingredient";
 
-export const RecipeDetails = ({isAdmin}) => {
+export const RecipeDetails = ({isAdmin, recipeObject}) => {
     const {recipeId} = useParams();
     const [recipe, setRecipe] = useState({});
     const [recipeIngredients, setRecipeIngredients] = useState([])
     const navigate = useNavigate();
+
+    if (recipeId === null){recipeId = recipeObject.id}
 
     useEffect(() => {
         getAllIngredientsByRecipeFromApi(recipeId).then(ingData => setRecipeIngredients(ingData))

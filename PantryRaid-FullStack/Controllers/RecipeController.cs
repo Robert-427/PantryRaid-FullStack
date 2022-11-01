@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PantryRaid.Models;
 using PantryRaid.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
@@ -73,6 +74,29 @@ namespace PantryRaid.Controllers
                 return true;
             });
             return Ok(usableRecipeList);
+        }
+
+        [HttpGet("GetRandomUsableRecipe")]
+        public IActionResult GetRandomRecipeUserCanMake()
+        {
+            var currentUser = GetCurrentUserProfile();
+            var allRecipes = _recipeRepository.GetAllRecipesWithIngredients();
+            var usersIngredients = _ingredientRepository.GetAllIngredientsByUser(currentUser.FirebaseUserId);
+            var usableRecipeList = allRecipes.Where(r =>
+            {
+                foreach (var ingredient in r.Ingredients)
+                {
+                    var foundIngredient = usersIngredients.FirstOrDefault(i => ingredient.Id == i.Id);
+                    if (foundIngredient == null)
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            });
+            var random = new Random();
+            var randomRecipe = usableRecipeList.OrderBy(item => random.Next());
+            return Ok(randomRecipe);
         }
 
         // POST api/<ValuesController>

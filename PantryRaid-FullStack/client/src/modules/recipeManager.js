@@ -36,6 +36,25 @@ export const getUsableRecipesFromApi = () => {
     })
 }
 
+export const getRandomUsableRecipeFromApi = () => {
+    return getToken().then((token) => {
+        return fetch(baseUrl+`/GetRandomUsableRecipe`, {
+            method: "GET",
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        }).then((res) => {
+            if(res.ok) {
+                return res.json()
+            }else {
+                throw new Error(
+                    "An unknown error occured while getting random recipe"
+                )
+            }
+        })
+    })
+}
+
 export const addNewRecipeToApi = (recipe) => {
     return fetch(baseUrl, {
         method: "POST",
