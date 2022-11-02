@@ -19,7 +19,7 @@ export const Ingredient = ({ingredient, isAdmin}) => {
     }
 
   return (
-    <Card className='ingredientCard' color ={cardColor()} style={{ width: '12rem' }}>
+    <Card id='ingredientCard' color ={cardColor()} style={{ width: '12rem' }}>
         <CardBody>
             <CardTitle><h6>{ingredient.name}</h6></CardTitle>
             <CardText className='cardText'>
