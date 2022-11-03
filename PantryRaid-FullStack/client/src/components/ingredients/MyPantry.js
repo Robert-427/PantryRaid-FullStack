@@ -58,6 +58,26 @@ export const MyPantry = () => {
         }
     }
 
+    const randomChecker = () => {
+        if(randomRecipe == undefined) {
+            return ""
+        } else {
+            return <><Card color="secondary" style={{width: '30rem'}}>
+            <Button color="primary" onClick={() => randomize()}><h6>Get New Random Recipe I Can Make</h6></Button>
+                <CardBody>
+                    <CardTitle><h5>{randomRecipe.title}</h5></CardTitle>
+                <div className="recipePhoto">
+                    {PhotoSwitcher()}
+                </div>
+                    <CardText>{randomRecipe.description}</CardText>
+                    <CardLink href="#">
+                        {randomRecipe.website}
+                    </CardLink>
+                </CardBody>
+            </Card></>
+        }
+    }
+
     return (
         <div className="pantry">
             <div className="title">
@@ -75,19 +95,7 @@ export const MyPantry = () => {
                 <div className="recipes">
                     {noAvailableRecipes()}
                     <div className="row justify-content-center">
-                    <Card color="secondary" style={{width: '30rem'}}>
-                    <Button color="primary" onClick={() => randomize()}><h6>Get New Random Recipe I Can Make</h6></Button>
-                        <CardBody>
-                            <CardTitle><h5>{randomRecipe.title}</h5></CardTitle>
-                        <div className="recipePhoto">
-                            {PhotoSwitcher()}
-                        </div>
-                            <CardText>{randomRecipe.description}</CardText>
-                            <CardLink href="#">
-                                {randomRecipe.website}
-                            </CardLink>
-                        </CardBody>
-                    </Card>
+                    {randomChecker()}
                 </div>
                     {usableRecipes.map((recipe) => (
                         <Recipe recipe={recipe} key={`recipe-${recipe.id}`} /> 
