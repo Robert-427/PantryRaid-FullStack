@@ -1,0 +1,98 @@
+USE [master]
+
+IF db_id('PantryRaid') IS NULL
+CREATE DATABASE [PantryRaid]
+GO
+
+USE [PantryRaid]
+GO
+
+DROP TABLE IF EXISTS [RecipeIngredient]
+DROP TABLE IF EXISTS [UserIngredient]
+DROP TABLE IF EXISTS [Recipe]
+DROP TABLE IF EXISTS [Ingredient]
+DROP TABLE IF EXISTS [FoodGroup]
+DROP TABLE IF EXISTS [UserProfile]
+DROP TABLE IF EXISTS [State]
+
+CREATE TABLE [UserProfile] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [FirebaseUserId] nvarchar(255) NOT NULL,
+  [DisplayName] nvarchar(255) NOT NULL,
+  [Email] nvarchar(255) NOT NULL,
+  [FirstName] nvarchar(255),
+  [LastName] nvarchar(255),
+  [Address] nvarchar(255),
+  [City] nvarchar(255),
+  [StateId] int,
+  [ZipCode] int,
+  [IsAdmin] bit NOT NULL
+)
+GO
+
+CREATE TABLE [State] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [Name] nvarchar(255) NOT NULL
+)
+GO
+
+CREATE TABLE [Ingredient] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [Name] nvarchar(255) NOT NULL,
+  [FoodGroupId] int NOT NULL
+)
+GO
+
+CREATE TABLE [UserIngredient] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [UserProfileId] int NOT NULL,
+  [IngredientId] int NOT NULL,
+  [Quantity] int
+)
+GO
+
+CREATE TABLE [Recipe] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [Title] nvarchar(255) NOT NULL,
+  [ImageUrl] nvarchar(255),
+  [Website] nvarchar(255),
+  [Description] nvarchar(2040) NOT NULL
+)
+GO
+
+CREATE TABLE [RecipeIngredient] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [IngredientId] int NOT NULL,
+  [RecipeId] int NOT NULL,
+  [IsRequired] bit NOT NULL
+)
+GO
+
+CREATE TABLE [FoodGroup] (
+  [Id] int PRIMARY KEY NOT NULL IDENTITY(1, 1),
+  [Name] nvarchar(255) NOT NULL
+)
+GO
+
+ALTER TABLE [RecipeIngredient] 
+DROP CONSTRAINT "recipeId";
+
+ALTER TABLE [RecipeIngredient]
+ADD CONSTRAINT "recipeId"
+FOREIGN KEY ([RecipeId]) REFERENCES [Recipe] ([Id]) ON DELETE CASCADE
+GO
+
+ALTER TABLE [RecipeIngredient] ADD FOREIGN KEY ([IngredientId]) REFERENCES [Ingredient] ([Id])
+GO
+
+ALTER TABLE [UserIngredient] ADD FOREIGN KEY ([IngredientId]) REFERENCES [Ingredient] ([Id])
+GO
+
+ALTER TABLE [UserIngredient] ADD FOREIGN KEY ([UserProfileId]) REFERENCES [UserProfile] ([Id])
+GO
+
+ALTER TABLE [UserProfile] ADD FOREIGN KEY ([StateId]) REFERENCES [State] ([Id])
+GO
+
+ALTER TABLE [Ingredient] ADD FOREIGN KEY ([FoodGroupId]) REFERENCES [FoodGroup] ([Id])
+GO
