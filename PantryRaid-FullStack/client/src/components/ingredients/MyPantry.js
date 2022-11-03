@@ -1,15 +1,17 @@
 import { useEffect, useState } from "react"
 import { useNavigate } from "react-router-dom";
-import { Button } from "reactstrap";
+import { Button, Card, CardBody, CardLink, CardText, CardTitle } from "reactstrap";
 import { getIngredientsByUserFromApi } from "../../modules/ingredientManager"
-import { getUsableRecipesFromApi } from "../../modules/recipeManager";
+import { getRandomUsableRecipeFromApi, getUsableRecipesFromApi } from "../../modules/recipeManager";
 import { Recipe } from "../recipes/Recipe";
+import { RecipeDetails } from "../recipes/RecipeDetails";
 import { Ingredient } from "./Ingredient";
 import "./Ingredient.css"
 
 export const MyPantry = () => {
     const [ingredients, setIngredients] = useState([])
     const [usableRecipes, setUsableRecipes] = useState([])
+    const [randomRecipe, setRandomRecipe] = useState({})
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -19,6 +21,26 @@ export const MyPantry = () => {
     useEffect(() => {
         getUsableRecipesFromApi().then(recipes => setUsableRecipes(recipes));
     }, []);
+
+    const randomize = () => {
+        getRandomUsableRecipeFromApi()
+            .then(random => {
+                const singleRecipe = random[0]
+                setRandomRecipe(singleRecipe)
+            })
+    }
+
+    useEffect(() => {
+        randomize()
+    }, [])
+
+    const PhotoSwitcher = () => {
+        if(randomRecipe.imageUrl == null){
+            return <img src={process.env.PUBLIC_URL + "/RecipePhoto.jpg"} alt="No Image Found" width={400} />
+        } else {
+            return <img src={randomRecipe.imageUrl} width={400} />
+        }
+    }
 
     const noIngredientsOnHand = () => {
         if(ingredients.length === 0 || ingredients == null) {
@@ -33,6 +55,26 @@ export const MyPantry = () => {
             return <div>
                 <h3>You have no recipes you can make until you get more ingredients.</h3>
             </div>
+        }
+    }
+
+    const randomChecker = () => {
+        if(randomRecipe == undefined) {
+            return ""
+        } else {
+            return <><Card color="secondary" style={{width: '30rem'}}>
+            <Button color="primary" onClick={() => randomize()}><h6>Get New Random Recipe I Can Make</h6></Button>
+                <CardBody>
+                    <CardTitle><h5>{randomRecipe.title}</h5></CardTitle>
+                <div className="recipePhoto">
+                    {PhotoSwitcher()}
+                </div>
+                    <CardText>{randomRecipe.description}</CardText>
+                    <CardLink href="#">
+                        {randomRecipe.website}
+                    </CardLink>
+                </CardBody>
+            </Card></>
         }
     }
 
@@ -52,6 +94,9 @@ export const MyPantry = () => {
                 </div>
                 <div className="recipes">
                     {noAvailableRecipes()}
+                    <div className="row justify-content-center">
+                    {randomChecker()}
+                </div>
                     {usableRecipes.map((recipe) => (
                         <Recipe recipe={recipe} key={`recipe-${recipe.id}`} /> 
                         ))}

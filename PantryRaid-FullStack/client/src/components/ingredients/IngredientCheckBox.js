@@ -41,7 +41,7 @@ export const IngredientCheckBox = ({ingredient, ingredientsArray, setIngredients
     }
     
     return (
-        <Card className='ingredientCard' color={cardColor()} style={{ width: '12rem' }}>
+        <Card id='ingredientCard' color={cardColor()} style={{ width: '12rem' }}>
             <CardBody>
                 <CardTitle><h6>{ingredient.name}</h6></CardTitle>
                 <Input onChange={checkboxChangeHandler} 

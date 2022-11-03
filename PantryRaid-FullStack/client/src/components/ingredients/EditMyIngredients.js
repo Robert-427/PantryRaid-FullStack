@@ -27,7 +27,7 @@ export const EditMyIngredients = () => {
     return (
         <div className="container">
             <div>
-                <Button color="success" onClick={SaveButtonClick}><h6>Save Updated Ingredients</h6></Button>
+                <Button color="success" onClick={() => SaveButtonClick()}><h6>Save Updated Ingredients</h6></Button>
                 <Button color="danger" onClick={() => navigate(-1)}><h6>Cancel</h6></Button>
             </div>
             <div className="row justify-content-center">

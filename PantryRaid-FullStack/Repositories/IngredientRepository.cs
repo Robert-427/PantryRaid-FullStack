@@ -222,11 +222,11 @@ namespace PantryRaid.Repositories
                     {
                         cmd.CommandText = @"
                             INSERT INTO UserIngredient (UserProfileId, IngredientId, Quantity)
-                            VALUES (@UserProfileId, @ingredientId, @isRequired)";
+                            VALUES (@UserProfileId, @ingredientId, @quantity)";
 
                         DBUtils.AddParameter(cmd, "@UserProfileId", userId);
                         DBUtils.AddParameter(cmd, "@ingredientId", ingredient.Id);
-                        DBUtils.AddParameter(cmd, "@isRequired", 10);
+                        DBUtils.AddParameter(cmd, "@quantity", 10);
 
                         cmd.ExecuteNonQuery();
                     }

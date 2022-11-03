@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom";
 import { Button, Col, DropdownItem, DropdownMenu, DropdownToggle, FormGroup, Input, Label, Row, UncontrolledDropdown } from "reactstrap";
 import { addNewIngredientToApi, getAllFoodGroupsFromApi, getAllIngredientsFromApi } from "../../modules/ingredientManager";
 import { Ingredient } from "./Ingredient";
@@ -10,7 +9,6 @@ export const AllIngredients = ({isAdmin}) => {
     const [ingredients, setIngredients] = useState([]);
     const [foodGroups, setFoodGroups] = useState([]);
     const [modal, setModal] = useState(false);
-    const navigate = useNavigate();
     const toggle = () => setModal(!modal);
 
     const [newIngredient, setNewIngredient] = useState({
@@ -78,13 +76,17 @@ export const AllIngredients = ({isAdmin}) => {
                                 <DropdownMenu className="sort-dropdown">
                                     {foodGroups.map(foodGroup => {
                                         return (
-                                            <DropdownItem key={foodGroup.id} value={foodGroup.id} name={foodGroup.name} className="foodGroup--name" 
-                                            onClick={(evt) => {
-                                                const copy = {...newIngredient}
-                                                copy.foodGroupId = evt.target.value
-                                                copy.foodGroupName = evt.target.name
-                                                setNewIngredient(copy)
-                                            }}
+                                            <DropdownItem 
+                                                key={foodGroup.id} 
+                                                value={foodGroup.id} 
+                                                name={foodGroup.name} 
+                                                className="foodGroup--name" 
+                                                onClick={(evt) => {
+                                                    const copy = {...newIngredient}
+                                                    copy.foodGroupId = evt.target.value
+                                                    copy.foodGroupName = evt.target.name
+                                                    setNewIngredient(copy)
+                                                }}
                                             >
                                                 {foodGroup.name}
                                             </DropdownItem>

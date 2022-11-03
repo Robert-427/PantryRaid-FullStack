@@ -1,4 +1,4 @@
-.ingredientCard {
+#ingredientCard {
     margin: 5px;
     justify-content: space-between;
 }
@@ -13,6 +13,11 @@
     flex-wrap: wrap;
     width: 60%;
     border: 2px black;
+    height: fit-content;
+}
+
+.recipes {
+    height: fit-content;
 }
 
 .cardText{
@@ -27,6 +32,14 @@
 
 h1 {
     color: wheat;
+    text-shadow: -1px 1px 4px #000,
+        1px 1px 4px #000,
+        1px -1px 0 #000,
+        -1px -1px 0 #000;
+}
+
+h2 {
+    color: aliceblue;
     text-shadow: -1px 1px 4px #000,
         1px 1px 4px #000,
         1px -1px 0 #000,
@@ -51,4 +64,5 @@ h6 {
 
 .pantry {
     margin: 10px;
+    height: max-content;
 }
