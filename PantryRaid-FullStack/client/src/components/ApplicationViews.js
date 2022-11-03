@@ -23,14 +23,14 @@ export default function ApplicationViews({ isLoggedIn, isAdmin }) {
           />
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
-          <Route path="MyPantry" element={<MyPantry />} />
-          <Route path="myIngredients/edit" element={<EditMyIngredients />} />
-          <Route path="Ingredients" element={<AllIngredients isAdmin={isAdmin} />} />
-          <Route path="Ingredients/edit/:ingredientId" element={<EditIngredient />} />
-          <Route path="Recipes" element={<AllRecipes />} />
-          <Route path="Recipes/details/:recipeId" element={<RecipeDetails isAdmin={isAdmin} />} />
-          <Route path="Recipes/new" element={<RecipeForm />} />
-          <Route path="Recipes/Edit/:recipeId" element={<RecipeEditForm />} />
+          <Route path="MyPantry" element={isLoggedIn ? <MyPantry /> : <Navigate to="/login" />} />
+          <Route path="myIngredients/edit" element={isLoggedIn ? <EditMyIngredients /> : <Navigate to="/login" />} />
+          <Route path="Ingredients" element={isLoggedIn ? <AllIngredients isAdmin={isAdmin} /> : <Navigate to="/login" />} />
+          <Route path="Ingredients/edit/:ingredientId" element={isLoggedIn ? <EditIngredient /> : <Navigate to="/login" />} />
+          <Route path="Recipes" element={isLoggedIn ? <AllRecipes /> : <Navigate to="/login" />} />
+          <Route path="Recipes/details/:recipeId" element={isLoggedIn ? <RecipeDetails isAdmin={isAdmin} /> : <Navigate to="/login" />} />
+          <Route path="Recipes/new" element={isLoggedIn ? <RecipeForm /> : <Navigate to="/login" />} />
+          <Route path="Recipes/Edit/:recipeId" element={isLoggedIn ? <RecipeEditForm /> : <Navigate to="/login" />} />
           <Route path="*" element={<p>Whoops, nothing here...</p>} />
         </Route>
       </Routes>
