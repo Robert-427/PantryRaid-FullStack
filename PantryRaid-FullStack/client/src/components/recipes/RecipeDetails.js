@@ -49,7 +49,7 @@ export const RecipeDetails = ({isAdmin, recipeObject}) => {
                             {PhotoSwitcher()}
                         </div>
                             <CardText>{recipe.description}</CardText>
-                            <CardLink href="#">
+                            <CardLink href={`${recipe.website}`}>
                                 {recipe.website}
                             </CardLink>
                         </CardBody>
